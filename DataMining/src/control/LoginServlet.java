@@ -5,6 +5,8 @@ import java.io.PrintWriter;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPathExpressionException;
 
 import org.scribe.builder.ServiceBuilder;
 import org.scribe.builder.api.LinkedInApi20;
@@ -14,6 +16,7 @@ import org.scribe.model.Token;
 import org.scribe.model.Verb;
 import org.scribe.model.Verifier;
 import org.scribe.oauth.OAuthService;
+import org.xml.sax.SAXException;
 
 public class LoginServlet extends HttpServlet {
 	   
@@ -21,7 +24,7 @@ public class LoginServlet extends HttpServlet {
 		 String apiKey = "77tdd86y1zq4xu";
 		 String apiSecret = "gG39SPQXrbLl2TGD";
 		 Token EMPTY_TOKEN = null;
-		 String PROTECTED_RESOURCE_URL = "https://api.linkedin.com/v1/people/~/connections?modified=new";
+		 String PROTECTED_RESOURCE_URL = "https://api.linkedin.com/v1/people/~/connections:(id,first-name,last-name,site-standard-profile-request,location,positions)";
 		 
 		 OAuthService service = new ServiceBuilder()
 		 		.provider(LinkedInApi20.class)
@@ -34,39 +37,43 @@ public class LoginServlet extends HttpServlet {
 		    
 		 String authorizationUrl = service.getAuthorizationUrl(EMPTY_TOKEN);
 		 
-		 System.out.println(request.getRequestURI());
-		 System.out.println(request.getContextPath());
 		 
 		 if (request.getSession().getAttribute("owncall").equals("yes")) {
-			 System.out.println("Redirect to the authorizaiotn url");
+			 
 			 request.getSession().setAttribute("owncall", "no");
 			 response.sendRedirect(authorizationUrl);
 			 return;
 		 } else {
-			 System.out.println("Auth successful - got callback");
+			 
 			 
 			 String code = request.getParameter("code");
 			 
 			 Verifier verifier = new Verifier(code);
-			 System.out.println("Trading the Request Token for an Access Token...");
 			 Token accessToken = service.getAccessToken(EMPTY_TOKEN, verifier);
-			 System.out.println("Got the Access Token!");
 			 
-			 System.out.println("Now we're going to access a protected resource...");
 			 OAuthRequest requestOauth = new OAuthRequest(Verb.GET, PROTECTED_RESOURCE_URL);
 			 service.signRequest(accessToken, requestOauth);
 			 Response responseOauth = requestOauth.send();
 
 			 
-			 System.out.println("Got it! Lets see what we found...");
-			 System.out.println();
-			 
-			 System.out.println(responseOauth.getCode());
-			 System.out.println(responseOauth.getBody());
-			 
+			
 			 response.setContentType("text/xml");
 			 PrintWriter out=response.getWriter();
 			 String connection=responseOauth.getBody();
+			 LinkedInUserXML temp = new LinkedInUserXML();
+			 try {
+				temp.parseXML(connection);
+				// temp.test();
+			} catch (ParserConfigurationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (SAXException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (XPathExpressionException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			 out.println(connection);
 		 }
 	 }
