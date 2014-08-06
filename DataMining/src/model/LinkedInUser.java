@@ -86,8 +86,8 @@ public class LinkedInUser {
 	}
 	
 	public String toString() {
-		String result = this.id + "" + this.firstName + "" + this.lastName  + "" + this.url
-				 + "" + this.location + "" + this.title + "" + this.company;
+		String result = this.id + " " + this.firstName + " " + this.lastName  + " " + this.url
+				 + " " + this.location + " " + this.title + " " + this.company;
 		return result;
 	}
 }

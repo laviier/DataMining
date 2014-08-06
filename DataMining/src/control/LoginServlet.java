@@ -78,6 +78,12 @@ public class LoginServlet extends HttpServlet {
 				e.printStackTrace();
 			}
 			 ArrayList<LinkedInUser> users = temp.users;
+			 
+			 //Yulei test
+			 System.out.println("Start to test Jsoup");
+			 LinkedInToNumericalData trial = new LinkedInToNumericalData(users);
+			 trial.test();
+			 
 			 out.println(connection);
 		 }
 	 }
