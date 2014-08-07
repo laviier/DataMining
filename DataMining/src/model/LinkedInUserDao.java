@@ -34,37 +34,42 @@ public class LinkedInUserDao {
 		this.tableLocation  = t5;
 		this.tableTitle  = t6;	
 	}
-
-//	public int insert_image(String pid,String owner,String secret,String farm,String server) throws MyDAOException {
-//		Connection con = null;
-//		String temp=null;int key=0;
-//        try {
-//        	con = getConnection();
-//        	con.setAutoCommit(false);
-//        	PreparedStatement pstmt = con.prepareStatement("INSERT INTO " + tableName1 + " (pid,owner,secret,farm,server) VALUES (?,?,?,?,?)",Statement.RETURN_GENERATED_KEYS);
-//        	
-//        	pstmt.setString(1,pid);
-//        	pstmt.setString(2,owner);
-//        	pstmt.setString(3,secret);
-//        	pstmt.setString(4,farm);
-//        	pstmt.setString(5,server);
-//        	int count = pstmt.executeUpdate();
-//        	ResultSet keys = pstmt.getGeneratedKeys();    
-//        	keys.next();  
-//            key = keys.getInt(1);
-//        	keys.close();
-//        	System.out.println("count ai:"+key);
-//        	if (count != 1) throw new SQLException("Insert updated "+count+" rows");
-//        	//SELECT LAST_INSERT_ID()
-//        	con.commit();
-//        	pstmt.close();
-//        	releaseConnection(con);
-//        } catch (Exception e) {
-//            try { if (con != null){ con.rollback();con.close();} } catch (SQLException e2) { /* ignore */ }
-//        	throw new MyDAOException(e);
-//        }
-//        return key;
-////	}
+	
+	public void insert_linkedin_user(String id, String firstName, String lastName, String url,
+			String picUrl) throws MyDAOException {
+		Connection con = null;
+		try {
+        	con = getConnection();
+        	con.setAutoCommit(false);
+        	PreparedStatement pstmt = con.prepareStatement("INSERT INTO " + tableLinkedInUser + 
+        			" (linkedin_id,first_name,last_name,url,profile_url,is_client,is_lead) VALUES (?,?,?,?,?,?,?)",Statement.RETURN_GENERATED_KEYS);
+        	pstmt.setString(0, id);
+        	pstmt.setString(1, firstName);
+        	pstmt.setString(2, lastName);
+        	pstmt.setString(3, url);
+        	pstmt.setString(4, picUrl);
+        	pstmt.setInt(5, 0);
+        	pstmt.setInt(6, 0);
+        	int count = pstmt.executeUpdate();
+        	ResultSet keys = pstmt.getGeneratedKeys();    
+        	keys.next();  
+            int key = keys.getInt(1);
+        	keys.close();
+        	System.out.println("count ai:"+key);
+        	if (count != 1) throw new SQLException("Insert updated "+count+" rows");
+        	//SELECT LAST_INSERT_ID()
+        	con.commit();
+        	pstmt.close();
+        	releaseConnection(con);
+		}  catch (Exception e) {
+			try { 
+				if (con != null){ 
+					con.rollback();con.close();
+				} 
+			} catch (SQLException e2) { /* ignore */ }
+			throw new MyDAOException(e);
+		}
+	}
 
 	private synchronized Connection getConnection() throws MyDAOException {
 		if (connectionPool.size() > 0) {

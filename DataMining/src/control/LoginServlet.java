@@ -10,7 +10,11 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
 
 import model.LinkedInUser;
+import model.LinkedInUserDao;
+import model.Model;
+import model.MyDAOException;
 
+import org.genericdao.DAOException;
 import org.scribe.builder.ServiceBuilder;
 import org.scribe.builder.api.LinkedInApi20;
 import org.scribe.model.OAuthRequest;
@@ -24,6 +28,8 @@ import org.xml.sax.SAXException;
 public class LoginServlet extends HttpServlet {
 	   
 	 public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		 
+		 
 		 String apiKey = "77tdd86y1zq4xu";
 		 String apiSecret = "gG39SPQXrbLl2TGD";
 		 Token EMPTY_TOKEN = null;

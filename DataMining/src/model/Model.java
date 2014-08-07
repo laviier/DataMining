@@ -9,13 +9,13 @@ import org.genericdao.DAOException;
 public class Model {
 	private LinkedInUserDao  lDao;
 	
-	public Model(ServletConfig config) throws ServletException, MyDAOException, DAOException {
+	public Model() throws ServletException, MyDAOException, DAOException {
 		try {
-			String jdbcDriver = config.getInitParameter("jdbcDriverName");
-			String jdbcURL    = config.getInitParameter("jdbcURL");
+			String jdbcDriver = "com.mysql.jdbc.Driver";
+			String jdbcURL    = "jdbc:mysql://raymond-james.isri.cmu.edu:3306/raymond";
 			
-			ConnectionPool pool = new ConnectionPool(jdbcDriver, jdbcURL);
-			lDao  = new LinkedInUserDao(jdbcDriver, jdbcURL, "client", "linkedInUser","positions","company","location","title");
+			ConnectionPool pool = new ConnectionPool(jdbcDriver, jdbcURL, "root", "112233");
+			lDao  = new LinkedInUserDao(jdbcDriver, jdbcURL, "client", "linkedin_user","positions","company","location","title");
 		}
 		catch (MyDAOException e) {
 			throw new ServletException(e);
