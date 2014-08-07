@@ -61,6 +61,8 @@ public class LinkedInUserXML {
 	        	user.setId(((Element) node).getElementsByTagName("id").item(0).getTextContent());
 	        	user.setFirstName(((Element) node).getElementsByTagName("first-name").item(0).getTextContent());
 	        	user.setLastName(((Element) node).getElementsByTagName("last-name").item(0).getTextContent());
+	        	user.setProfileURL(((Element) node).getElementsByTagName("picture-url").item(0).getTextContent());
+	 	       
 	        } catch (NullPointerException e){
     			e.printStackTrace();
     		}
@@ -98,6 +100,19 @@ public class LinkedInUserXML {
 			        	if (tempCompanyNode instanceof Element) {
 			        		try {
 			        			user.setCompany(((Element) tempCompanyNode).getElementsByTagName("name").item(0).getTextContent());
+			        		} catch (NullPointerException e){
+			        			e.printStackTrace();
+			        		}
+			        	}
+			        	
+			        	NodeList tempDateNodes = ((Element) tempPositionNode).getElementsByTagName("start-date");
+			        	Node tempDateNode = tempDateNodes.item(0);
+			        	if (tempDateNode instanceof Element) {
+			        		try {
+			        			String year = ((Element) tempDateNode).getElementsByTagName("year").item(0).getTextContent();
+			        			String month = ((Element) tempDateNode).getElementsByTagName("month").item(0).getTextContent();
+			        			user.setStartMonth(Integer.parseInt(month));
+			        			user.setStartYear(Integer.parseInt(year));
 			        		} catch (NullPointerException e){
 			        			e.printStackTrace();
 			        		}

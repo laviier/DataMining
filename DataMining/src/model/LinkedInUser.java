@@ -8,6 +8,8 @@ public class LinkedInUser {
 	private String company;
 	private String location;
 	private String url;
+	private String profileURL;
+	private int startYear,startMonth;
 	
 	public LinkedInUser() {
 		this.id = "";
@@ -17,6 +19,9 @@ public class LinkedInUser {
 		this.company = "";
 		this.location = "";
 		this.url = "";
+		this.profileURL = "";
+		this.startMonth = 0;
+		this.startYear = 0;
 	}
 	
 	public LinkedInUser(String newId) {
@@ -27,6 +32,9 @@ public class LinkedInUser {
 		this.company = "";
 		this.location = "";
 		this.url = "";
+		this.profileURL = "";
+		this.startMonth = 0;
+		this.startYear = 0;
 	}
 	
 	public String getId() {
@@ -85,9 +93,34 @@ public class LinkedInUser {
 		this.url = newURL;
 	}
 	
+	public String getProfileURL() {
+		return this.profileURL;
+	}
+	
+	public void setProfileURL(String newURL) {
+		this.profileURL = newURL;
+	}
+	
+	public int getStartMonth() {
+		return this.startMonth;
+	}
+	
+	public void setStartMonth(int newStartMonth) {
+		this.startMonth = newStartMonth;
+	}
+	
+	public int getStartYear() {
+		return this.startYear;
+	}
+	
+	public void setStartYear(int newStartYear) {
+		this.startYear = newStartYear;
+	}
+	
 	public String toString() {
 		String result = this.id + " " + this.firstName + " " + this.lastName  + " " + this.url
-				 + " " + this.location + " " + this.title + " " + this.company;
+				  + " " + this.profileURL + " " + this.location + " " + this.title 
+				  + " " + this.company  + " " + this.startYear  + " " + this.startMonth;
 		return result;
 	}
 }

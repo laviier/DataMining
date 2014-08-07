@@ -27,7 +27,7 @@ public class LoginServlet extends HttpServlet {
 		 String apiKey = "77tdd86y1zq4xu";
 		 String apiSecret = "gG39SPQXrbLl2TGD";
 		 Token EMPTY_TOKEN = null;
-		 String PROTECTED_RESOURCE_URL = "https://api.linkedin.com/v1/people/~/connections:(id,first-name,last-name,site-standard-profile-request,location,positions)";
+		 String PROTECTED_RESOURCE_URL = "https://api.linkedin.com/v1/people/~/connections:(id,first-name,last-name,picture-url,site-standard-profile-request,location,positions)";
 		 
 		 OAuthService service = new ServiceBuilder()
 		 		.provider(LinkedInApi20.class)
@@ -80,9 +80,9 @@ public class LoginServlet extends HttpServlet {
 			 ArrayList<LinkedInUser> users = temp.users;
 			 
 			 //Yulei test
-			 System.out.println("Start to test Jsoup");
-			 LinkedInToNumericalData trial = new LinkedInToNumericalData(users);
-			 trial.test();
+//			 System.out.println("Start to test Jsoup");
+//			 LinkedInToNumericalData trial = new LinkedInToNumericalData(users);
+//			 trial.test();
 			 
 			 out.println(connection);
 		 }
