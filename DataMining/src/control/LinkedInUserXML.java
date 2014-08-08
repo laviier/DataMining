@@ -16,9 +16,7 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import model.LinkedInUser;
-import model.LinkedInUserDao;
-import model.Model;
-import model.MyDAOException;
+import model.Sql;
 
 import java.io.*;
 
@@ -33,24 +31,24 @@ import org.w3c.dom.NodeList;
 
 public class LinkedInUserXML {
 	ArrayList<LinkedInUser> users;
-	Model model;
-	LinkedInUserDao lDao;
+//	Model model;
+//	LinkedInUserDao lDao;
 	
 	public LinkedInUserXML() {
 		this.users = new ArrayList<LinkedInUser>();
-		try {
-			this.model = new Model();
-		} catch (MyDAOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (DAOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (ServletException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		 this.lDao = model.getLinkedInUserDao();
+//		try {
+//			this.model = new Model();
+//		} catch (MyDAOException e1) {
+//			// TODO Auto-generated catch block
+//			e1.printStackTrace();
+//		} catch (DAOException e1) {
+//			// TODO Auto-generated catch block
+//			e1.printStackTrace();
+//		} catch (ServletException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		 this.lDao = model.getLinkedInUserDao();
 	}
 
 	public void parseXML(String xmlSource) throws ParserConfigurationException, SAXException, IOException, XPathExpressionException {
@@ -84,7 +82,7 @@ public class LinkedInUserXML {
 	        	user.setProfileURL(((Element) node).getElementsByTagName("picture-url").item(0).getTextContent());
 	 	       
 	        } catch (NullPointerException e){
-    			e.printStackTrace();
+    			//e.printStackTrace();
     		}
 	        
 	        NodeList tempUrlNodes = ((Element) node).getElementsByTagName("site-standard-profile-request");
@@ -99,7 +97,7 @@ public class LinkedInUserXML {
 	        	try {
 	        		user.setLocation(((Element) tempLocationNode).getElementsByTagName("name").item(0).getTextContent());
 	        	} catch (NullPointerException e){
-        			e.printStackTrace();
+        			//e.printStackTrace();
         		}
 	        }
 	        
@@ -113,7 +111,7 @@ public class LinkedInUserXML {
 			        	try {
 			        		user.setTitle(((Element) tempPositionNode).getElementsByTagName("title").item(0).getTextContent());
 			        	} catch (NullPointerException e){
-		        			e.printStackTrace();
+		        			//e.printStackTrace();
 		        		}
 			        	NodeList tempCompanyNodes = ((Element) tempPositionNode).getElementsByTagName("company");
 			        	Node tempCompanyNode = tempCompanyNodes.item(0);
@@ -121,7 +119,7 @@ public class LinkedInUserXML {
 			        		try {
 			        			user.setCompany(((Element) tempCompanyNode).getElementsByTagName("name").item(0).getTextContent());
 			        		} catch (NullPointerException e){
-			        			e.printStackTrace();
+			        			//e.printStackTrace();
 			        		}
 			        	}
 			        	
@@ -134,23 +132,25 @@ public class LinkedInUserXML {
 			        			user.setStartMonth(Integer.parseInt(month));
 			        			user.setStartYear(Integer.parseInt(year));
 			        		} catch (NullPointerException e){
-			        			e.printStackTrace();
+			        			//e.printStackTrace();
 			        		}
 			        	}
 			        }
 	        	} catch (NullPointerException e){
-	        		e.printStackTrace();
+	        		//e.printStackTrace();
 	        	}
 	        }
 	        
 	        users.add(user);
 	        
-	        try {
-				lDao.insert_linkedin_user(user.getId(), user.getFirstName(), user.getLastName(), user.getURL(), user.getProfileURL());
-			} catch (MyDAOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+//	        try {
+//				lDao.insert_linkedin_user(user.getId(), user.getFirstName(), user.getLastName(), user.getURL(), user.getProfileURL());
+//			} catch (MyDAOException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+	        Sql.insert_linkedin_user(user.getId(), user.getFirstName(), user.getLastName(), user.getURL(), user.getProfileURL(),
+	        		user.getTitle(),user.getCompany(),user.getLocation(),user.getStartYear(),user.getStartMonth());
 	      }
 
 	    }
