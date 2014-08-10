@@ -2,6 +2,13 @@ package control;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.List;
 import java.util.Scanner;
 
 import javax.servlet.ServletException;
@@ -9,6 +16,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import model.FacebookFeedBean;
+import model.FacebookFeeds;
 
 import org.scribe.builder.ServiceBuilder;
 import org.scribe.builder.api.FacebookApi;
@@ -19,8 +29,13 @@ import org.scribe.model.Verb;
 import org.scribe.model.Verifier;
 import org.scribe.oauth.OAuthService;
 
+import com.google.gson.Gson;
+
 
 public class LoginFacebook extends HttpServlet {
+	private static String url = "jdbc:mysql://raymond-james.isri.cmu.edu:3306/raymond";
+	private static Connection conn = null;
+	private static Statement st = null;
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String apiKey = "1447625108855686";
@@ -59,6 +74,53 @@ public class LoginFacebook extends HttpServlet {
 			 PrintWriter out=response.getWriter();
 			 String connection=oauthresponse.getBody();
 //			 String s2=oauthresponse2.getBody();
+			 
+			 //connection is a json file
+			 FacebookFeeds feeds = new Gson().fromJson(connection, FacebookFeeds.class);
+			 System.out.println("connection:" + connection);
+			 
+			 List<FacebookFeedBean> allFeeds = feeds.getData();
+			 connect();
+			 for (int i = 0; i < allFeeds.size(); i++) {
+				 FacebookFeedBean ithFeed = allFeeds.get(i);
+				 boolean hasIt = false; 
+				 ResultSet rs = null;
+				 try {
+					 rs = st.executeQuery("Select * from facebook_feeds where feeds_id = '" 
+							 + ithFeed.getId() + "'");
+					 while (rs.next()) {
+						 hasIt = true;
+					 }
+				 } catch (SQLException e) {
+					 e.printStackTrace();
+				 }
+				 //the feed has already been stored in the database
+				 if (hasIt) {
+					 continue;
+				 }
+				 
+				 String feedId = getInsertableString(ithFeed.getId());
+				 String fromId = getInsertableString(ithFeed.getFrom().getId());
+				 String fromName = getInsertableString(ithFeed.getFrom().getName());
+				 String story = getInsertableString(ithFeed.getStory());
+				 String message = getInsertableString(ithFeed.getMessage());
+				 String sqlInsert = "insert into facebook_feeds values (";
+				 if (ithFeed.getPlace() == null) {
+					 sqlInsert += "'" + feedId + "','" + fromId + "','" 
+							 + fromName + "','" + story + "','" + message
+							 + "','" + "null" + "')";
+				 } else {
+					 sqlInsert += "'" + ithFeed.getId() + "','" + ithFeed.getFrom().getId() + "','" 
+							 + ithFeed.getFrom().getName() + "','" + ithFeed.getStory() + "','" + ithFeed.getMessage()
+							 + "','" + getInsertableString(ithFeed.getPlace().getName()) + "')"; 
+				 }
+				 try {
+					 st.executeUpdate(sqlInsert);
+				 } catch (SQLException e) {
+					 e.printStackTrace();
+				 }
+			 }
+			 
 			 out.println(connection);
 			 out.println();
 			 out.println("This is user's about_me:");
@@ -67,8 +129,45 @@ public class LoginFacebook extends HttpServlet {
 		 }
 	}
 
+	/**
+	 *  Single Quotation Mark may cause syntax problem
+	 * @param str
+	 * @return string that can be safely insert
+	 */
+	private String getInsertableString(String str) {
+		if (str == null) {
+			return "null";
+		}
+		
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < str.length(); i++) {
+			char c = str.charAt(i);
+			if (c == '\'') {
+				sb.append("\\'");
+				continue;
+			}
+			sb.append(c);
+		}
+		
+		return sb.toString();
+	}
+	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);   
 	}
 
+	private static void connect() {
+		try {
+	      // create our mysql database connection
+	      String myDriver = "org.gjt.mm.mysql.Driver";
+	      Class.forName(myDriver);
+	      conn = DriverManager.getConnection(url, "root", "112233");
+
+	      // create the java statement
+	      st = conn.createStatement();	      
+	    } catch (Exception e) {
+	      System.err.println("Got an exception! ");
+	      System.err.println(e.getMessage());
+	    }
+	}
 }
