@@ -13,6 +13,13 @@ public class Test {
 	    int month = cal.get(Calendar.MONTH);
 
 		System.out.println(year+" "+month);
+		
+		String[] a = null;
+		String s = "Sr Technical Recruiterat at Antra Inc";
+		a = s.split(" at ");
+		for (String b: a) {
+			System.out.println(b);
+		}
 	}
 
 }

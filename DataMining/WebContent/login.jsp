@@ -9,20 +9,27 @@
 <body>
 	<form name="loginForm" action="LoginServlet" method ="GET" align="center">
 	<%session.setAttribute("owncall", "yes");%>
+	<%session.setAttribute("function", "1");%>
 		<button type="submit"><img src="img/linkedin-login.png" alt="submit"></button>
 	</form>
 	<br/>
 	<br/>
-	<form name="loginForm" action="LoginFBServlet" method ="GET" align="center">
+	<form name="login1Form" action="LoginFBServlet" method ="GET" align="center">
 		<button type="submit"><img src="img/facebook-login.png" alt="submit"></button>
 		<br/>
 		Login with the pre-generated access token
 	</form>
 	<br/>
 	<br/>
-	<form name="loginForm" action="LoginFacebook" method ="GET" align="center">
+	<form name="login2Form" action="LoginFacebook" method ="GET" align="center">
 	<%session.setAttribute("owncallFB", "yes");%>
 		<button type="submit"><img src="img/facebook-login.png" alt="submit"></button>
+	</form>
+	
+	<form name="getForm" action="LoginServlet" method ="GET" align="center">
+	<%session.setAttribute("owncall", "yes");%>
+	<%session.setAttribute("function", "2");%>
+		<button type="submit"><img src="img/linkedin-login.png" alt="submit"></button>
 	</form>
 </body>
 </html>

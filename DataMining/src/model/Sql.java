@@ -17,8 +17,8 @@ public class Sql {
 			String picUr, String title, String company, String location,int year,int month){
 			//String id, String firstName, String lastName, String url,String picUrl) {
 		connect();
-		String insertUser = "INSERT INTO linkedin_user (linkedin_id,first_name,last_name,url,profile_url,is_client,is_lead,fa_id) VALUE " +  
-		"('"+id+"','"+firstName+"','"+lastName+"','"+url+"','"+picUr+"',0,0,1)";
+		String insertUser = "INSERT INTO linkedin_user (linkedin_id,first_name,last_name,url,profile_url,is_client,is_lead,fa_id,is_first_level) VALUE " +  
+		"('"+id+"','"+firstName+"','"+lastName+"','"+url+"','"+picUr+"',0,0,1,1)";
 		String selectTitle = "select title_id from title where title_name='"+title+"';";
 		String selectLocation = "select location_id from location where location_name='"+location+"';";
 		String selectCompany = "select company_id from company where company_name='"+company+"';";
@@ -96,13 +96,6 @@ public class Sql {
 					}
 				}
 			}
-			
-			
-			// iterate through the java resultset
-//			while (rs.next()) {
-//				String client = rs.getString("client_status");
-//				System.out.print(client);
-//			}
 		} catch (Exception e) {
 			System.err.println("Got an exception! ");
 			System.err.println(e.getMessage());

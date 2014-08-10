@@ -2,6 +2,7 @@ package control;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javax.servlet.*;
@@ -10,6 +11,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
 
 import model.LinkedInUser;
+import model.SecondFriends;
+import model.Sql2;
 
 import org.genericdao.DAOException;
 import org.scribe.builder.ServiceBuilder;
@@ -26,8 +29,8 @@ public class LoginServlet extends HttpServlet {
 	
 	 public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		 String apiKey = "77tdd86y1zq4xu";
-		 String apiSecret = "gG39SPQXrbLl2TGD";
+		 String apiKey = "77q9qfyr9zu5hj";
+		 String apiSecret = "a4T4esIIhtl8k3fN";
 		 Token EMPTY_TOKEN = null;
 		 String PROTECTED_RESOURCE_URL = "https://api.linkedin.com/v1/people/~/connections:(id,first-name,last-name,picture-url,site-standard-profile-request,location,positions)";
 		 
@@ -50,22 +53,23 @@ public class LoginServlet extends HttpServlet {
 			 return;
 		 } else {
 			 
+			 if(request.getSession().getAttribute("function").equals("1")) {
 			 
 			 String code = request.getParameter("code");
 			 
 			 Verifier verifier = new Verifier(code);
 			 Token accessToken = service.getAccessToken(EMPTY_TOKEN, verifier);
+			 request.getSession().setAttribute("access_token", accessToken);
 			 
 			 OAuthRequest requestOauth = new OAuthRequest(Verb.GET, PROTECTED_RESOURCE_URL);
 			 service.signRequest(accessToken, requestOauth);
 			 Response responseOauth = requestOauth.send();
-
 			 
-			
 			 response.setContentType("text/xml");
 			 PrintWriter out=response.getWriter();
 			 String connection=responseOauth.getBody();
 			 LinkedInUserXML temp = new LinkedInUserXML();
+			 
 			 try {
 				temp.parseXML(connection);
 				// temp.test();
@@ -81,12 +85,46 @@ public class LoginServlet extends HttpServlet {
 			}
 			 ArrayList<LinkedInUser> users = temp.users;
 			 
-			 //Yulei test
-//			 System.out.println("Start to test Jsoup");
-//			 LinkedInToNumericalData trial = new LinkedInToNumericalData(users);
-//			 trial.test();
-			 
 			 out.println(connection);
+			 }else {
+				 ArrayList<String> a = Sql2.getAllId();
+
+				 //String PROTECTED_RESOURCE_URL2 = "https://api.linkedin.com/v1/people/~/network/updates:(update-content:(person:(id,first-name,last-name,headline)))";
+				 String code = request.getParameter("code");
+				 
+				 Verifier verifier = new Verifier(code);
+				 Token accessToken = service.getAccessToken(EMPTY_TOKEN, verifier);
+				 request.getSession().setAttribute("access_token", accessToken);
+				 
+				 for ( int i=0; i<a.size(); i++) {
+					 String PROTECTED_RESOURCE_URL2 = "https://api.linkedin.com/v1/people/"+a.get(i)+"/network/updates:(update-content:(person:(id,first-name,last-name,headline)))";
+					 
+					 OAuthRequest requestOauth = new OAuthRequest(Verb.GET, PROTECTED_RESOURCE_URL2);
+					 //Token accessToken = (Token) request.getSession().getAttribute("access_token");
+					 service.signRequest(accessToken, requestOauth);
+					 Response responseOauth = requestOauth.send();
+					 
+					 SecondUserXML temp = new SecondUserXML();
+					 
+					 response.setContentType("text/xml");
+					 PrintWriter out=response.getWriter();
+					 String connection=responseOauth.getBody();
+					 
+					 try {
+						try {
+							temp.parseXML(connection);
+						} catch (SQLException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					} catch (XPathExpressionException
+							| ParserConfigurationException | SAXException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					out.println(connection);
+				 }
+			 }
 		 }
 	 }
 	 

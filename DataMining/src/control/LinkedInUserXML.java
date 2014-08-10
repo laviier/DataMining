@@ -31,24 +31,9 @@ import org.w3c.dom.NodeList;
 
 public class LinkedInUserXML {
 	ArrayList<LinkedInUser> users;
-//	Model model;
-//	LinkedInUserDao lDao;
 	
 	public LinkedInUserXML() {
 		this.users = new ArrayList<LinkedInUser>();
-//		try {
-//			this.model = new Model();
-//		} catch (MyDAOException e1) {
-//			// TODO Auto-generated catch block
-//			e1.printStackTrace();
-//		} catch (DAOException e1) {
-//			// TODO Auto-generated catch block
-//			e1.printStackTrace();
-//		} catch (ServletException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		 this.lDao = model.getLinkedInUserDao();
 	}
 
 	public void parseXML(String xmlSource) throws ParserConfigurationException, SAXException, IOException, XPathExpressionException {
@@ -142,23 +127,12 @@ public class LinkedInUserXML {
 	        }
 	        
 	        users.add(user);
-	        
-//	        try {
-//				lDao.insert_linkedin_user(user.getId(), user.getFirstName(), user.getLastName(), user.getURL(), user.getProfileURL());
-//			} catch (MyDAOException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
+
 	        Sql.insert_linkedin_user(user.getId(), user.getFirstName(), user.getLastName(), user.getURL(), user.getProfileURL(),
 	        		user.getTitle(),user.getCompany(),user.getLocation(),user.getStartYear(),user.getStartMonth());
 	      }
 
 	    }
-
-	    //Printing the Employee list populated.
-//	    for (int i = 0; i < users.size(); i++) {
-//	      System.out.println(users.get(i).toString());
-//	    }
 
 	}
 }
