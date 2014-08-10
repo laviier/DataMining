@@ -1,4 +1,4 @@
-package model;
+package mining;
 public class AverageSalariesOfLinkedInUser {
 	private int averageTitleSalary;
 	private int averageCompanySalary;

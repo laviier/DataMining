@@ -25,7 +25,7 @@ public class LoginFacebook extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String apiKey = "1447625108855686";
 	    String apiSecret = "a8ce3774165d43d3bbf2b543afef0e65";
-	    String PROTECTED_RESOURCE_URL = "https://graph.facebook.com/me/?fields=friends";
+	    String PROTECTED_RESOURCE_URL = "https://graph.facebook.com/me/home";
 	    Token EMPTY_TOKEN = null;
 	    
 	    OAuthService service = new ServiceBuilder()
@@ -33,7 +33,7 @@ public class LoginFacebook extends HttpServlet {
 	                                  .apiKey(apiKey)
 	                                  .apiSecret(apiSecret)
 	                                  .callback("http://localhost:8080/DataMining/LoginFacebook")
-	                                  .scope("user_about_me,user_education_history,user_friends,user_work_history,user_birthday,user_location")
+	                                  .scope("user_about_me,user_friends,read_stream")
 	                                  .build();
 	   
 	    String authorizationUrl = service.getAuthorizationUrl(EMPTY_TOKEN);
@@ -51,19 +51,18 @@ public class LoginFacebook extends HttpServlet {
 			 service.signRequest(accessToken, oauthrequest);
 			 Response oauthresponse = oauthrequest.send();
 			 
-			 OAuthRequest oauthrequest2 = new OAuthRequest(Verb.GET, "https://graph.facebook.com/me");
-			 service.signRequest(accessToken, oauthrequest2);
-			 Response oauthresponse2 = oauthrequest2.send();
+//			 OAuthRequest oauthrequest2 = new OAuthRequest(Verb.GET, "https://graph.facebook.com/me");
+//			 service.signRequest(accessToken, oauthrequest2);
+//			 Response oauthresponse2 = oauthrequest2.send();
 			 
 			 response.setContentType("application/json");
 			 PrintWriter out=response.getWriter();
 			 String connection=oauthresponse.getBody();
-			 String s2=oauthresponse2.getBody();
-			 out.println("This is user's friends:");
+//			 String s2=oauthresponse2.getBody();
 			 out.println(connection);
 			 out.println();
 			 out.println("This is user's about_me:");
-			 out.println(s2);
+//			 out.println(s2);
 			 out.flush();
 		 }
 	}

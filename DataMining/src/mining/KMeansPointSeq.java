@@ -1,6 +1,7 @@
 package mining;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -13,7 +14,7 @@ import java.util.Random;
 public class KMeansPointSeq {
 	private static int threshold = 5;
 
-	public void cluster(ArrayList<Point> points, int K) {
+	public void cluster(List<Point> points, int K) {
 
 		int diff = Integer.MAX_VALUE;
 		int N = points.size();
@@ -119,30 +120,30 @@ public class KMeansPointSeq {
 				Math.pow((a.getZ() - b.getZ()), 2)), 0.5);
 	}
 
-	public static void main(String[] args) {
-		if (args.length < 2) {
-			System.out.println("Please specify K and input file path");
-			return;
-		}
-
-		int K = 1;
-		try {
-			K = Integer.parseInt(args[0]);
-		} catch (NumberFormatException e) {
-			System.out.println("K should be a number");
-			return;
-		}
-
-		long startTime = System.currentTimeMillis();
-
-		ArrayList<Point> points = ReadInput.readPoint(args[1]);
-		KMeansPointSeq kMeans = new KMeansPointSeq();
-		kMeans.cluster(points, K);
-
-		long endTime = System.currentTimeMillis();
-
-		// Print out time
-		// System.out.println("Running Time: " + (endTime - startTime));
-
-	}
+//	public static void main(String[] args) {
+//		if (args.length < 2) {
+//			System.out.println("Please specify K and input file path");
+//			return;
+//		}
+//
+//		int K = 1;
+//		try {
+//			K = Integer.parseInt(args[0]);
+//		} catch (NumberFormatException e) {
+//			System.out.println("K should be a number");
+//			return;
+//		}
+//
+//		long startTime = System.currentTimeMillis();
+//
+//		ArrayList<Point> points = ReadInput.readPoint(args[1]);
+//		KMeansPointSeq kMeans = new KMeansPointSeq();
+//		kMeans.cluster(points, K);
+//
+//		long endTime = System.currentTimeMillis();
+//
+//		// Print out time
+//		// System.out.println("Running Time: " + (endTime - startTime));
+//
+//	}
 }

@@ -15,6 +15,8 @@ public class Point implements Serializable {
 	private double y;
 	private double z;
 	private int clusterIndex;
+	private String linkedinId;
+	private int isClient;
 
 	public Point(double x, double y, double z) {
 		//this.uid = uid;
@@ -22,6 +24,8 @@ public class Point implements Serializable {
 		this.y = y;
 		this.z = z;
 		this.clusterIndex = -1;
+		this.linkedinId = "";
+		this.isClient = -1;
 	}
 	
 //	public String getId() {
@@ -57,15 +61,32 @@ public class Point implements Serializable {
 	}
 	
 	public String toString() {
-		return "(" + x + "," + y + "," + z + ") Cluster: " + clusterIndex;
+		return "(" + x + "," + y + "," + z + ") linkedin id: " + linkedinId 
+				+" isClient: "+ isClient +" Cluster: " + clusterIndex;
 	}
 
 	public int getClusterIndex() {
-		return clusterIndex;
+		return this.clusterIndex;
 	}
 
 	public void setClusterIndex(int clusterIndex) {
 		this.clusterIndex = clusterIndex;
+	}
+	
+	public int getIsClient() {
+		return this.isClient;
+	}
+	
+	public void setIsClient(int isClient) {
+		this.isClient = isClient;
+	}
+	
+	public String getLinkedinId() {
+		return linkedinId;
+	}
+	
+	public void setLinkedinId(String linkedinId) {
+		this.linkedinId = linkedinId;
 	}
 }
 
