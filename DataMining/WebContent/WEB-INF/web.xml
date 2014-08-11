@@ -35,11 +35,11 @@
     <url-pattern>/LoginFacebook</url-pattern>
   </servlet-mapping>
   <servlet>
-    <servlet-name>Get2ndFriend</servlet-name>
-    <servlet-class>control.Get2ndFriend</servlet-class>
+    <servlet-name>linkedinlogin</servlet-name>
+    <servlet-class>control.LoginLinkedin</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>Get2ndFriend</servlet-name>
-    <url-pattern>/Get2ndFriend</url-pattern>
+    <servlet-name>linkedinlogin</servlet-name>
+    <url-pattern>/linkedinlogin</url-pattern>
   </servlet-mapping>
 </web-app>

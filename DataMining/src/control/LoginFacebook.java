@@ -48,7 +48,7 @@ public class LoginFacebook extends HttpServlet {
 	                                  .provider(FacebookApi.class)
 	                                  .apiKey(apiKey)
 	                                  .apiSecret(apiSecret)
-	                                  .callback("http://localhost:8080/DataMining/LoginFacebook")
+	                                  .callback("http://128.237.164.68:8080/DataMining/LoginFacebook")
 	                                  .scope("user_about_me,user_friends,read_stream")
 	                                  .build();
 	   
@@ -72,7 +72,7 @@ public class LoginFacebook extends HttpServlet {
 //			 Response oauthresponse2 = oauthrequest2.send();
 			 
 			 response.setContentType("application/json");
-			 PrintWriter out=response.getWriter();
+			 //PrintWriter out=response.getWriter();
 			 String connection=oauthresponse.getBody();
 //			 String s2=oauthresponse2.getBody();
 			 
@@ -134,12 +134,15 @@ public class LoginFacebook extends HttpServlet {
 				 }
 			 }
 			 
-			 out.println(connection);
-			 out.println();
-			 out.println("This is user's about_me:");
-//			 out.println(s2);
-			 out.flush();
+//			 out.println(connection);
+//			 out.println();
+//			 out.println("This is user's about_me:");
+////			 out.println(s2);
+//			 out.flush();
 		 }
+	    
+	    String redirectURL = "http://128.237.164.68:8080/DataMining/success.jsp";
+		 response.sendRedirect(redirectURL);
 	}
 
 	/**

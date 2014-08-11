@@ -4,12 +4,15 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Login with LinedIn</title>
+<title>Login with LinkedIn</title>
 </head>
 <body>
-	<form name="login2Form" action="LoginFacebook" method ="GET" align="center">
-	<%session.setAttribute("owncallFB", "yes");%>
-		<button type="submit"><img src="img/facebook-login.png" alt="submit"></button>
+<br/>
+<div align="center">
+	<form name="loginForm" action="linkedinlogin" method ="GET" align="center">
+	<%session.setAttribute("owncall", "yes");%>
+		<button type="submit"><img src="img/linkedin-login.png" alt="submit"></button>
 	</form>
+</div>
 </body>
 </html>

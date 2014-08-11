@@ -33,6 +33,29 @@ public class Sql2 {
 		return a;
 	}
 	
+	public static void insertToken(String token, String raw, String date) {
+		connect(); 
+		String sqlToken = "insert into linkedin_token (token,raw_response,expire_date,fa_id) values ('" 
+				 + token + "','" + raw + "','" + date + "',1)";
+		try {
+			st.execute(sqlToken);
+		} catch (Exception e) {
+			System.err.println("Got an exception! ");
+			System.err.println(e.getMessage());
+		}
+	}
+	
+	public static void update(String id, int isLead) {
+		connect();
+		String update = "update linkedin_user set is_lead="+isLead+" where linkedin_id ='"+id+"';";
+		try {
+			st.execute(update);
+		} catch (Exception e) {
+			System.err.println("Got an exception! ");
+			System.err.println(e.getMessage());
+		}
+	}
+	
 	public static void insert(String id, String firstName, String lastName, String title, 
 			String company, String url, String picUr) throws SQLException{
 		//String id, String firstName, String lastName, String url,String picUrl) {
