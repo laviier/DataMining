@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Scanner;
 
@@ -75,12 +76,24 @@ public class LoginFacebook extends HttpServlet {
 			 String connection=oauthresponse.getBody();
 //			 String s2=oauthresponse2.getBody();
 			 
+			 connect();
+			 //store the access token
+			 String sqlToken = "insert into fb_token (token,raw_response) values ('" 
+					 + accessToken.getToken() + "','" + accessToken.getRawResponse()
+					 + "')";
+			 //insert the token to the database;
+			 System.out.println(sqlToken);
+			 try {
+				st.executeUpdate(sqlToken);
+			 } catch (SQLException e1) {
+				e1.printStackTrace();
+			 }
+
+			 
 			 //connection is a json file
 			 FacebookFeeds feeds = new Gson().fromJson(connection, FacebookFeeds.class);
-			 System.out.println("connection:" + connection);
 			 
 			 List<FacebookFeedBean> allFeeds = feeds.getData();
-			 connect();
 			 for (int i = 0; i < allFeeds.size(); i++) {
 				 FacebookFeedBean ithFeed = allFeeds.get(i);
 				 boolean hasIt = false; 
