@@ -48,7 +48,7 @@ public class LoginFacebook extends HttpServlet {
 	                                  .provider(FacebookApi.class)
 	                                  .apiKey(apiKey)
 	                                  .apiSecret(apiSecret)
-	                                  .callback("http://128.237.164.68:8080/DataMining/LoginFacebook")
+	                                  .callback("http://localhost:8080/DataMining/LoginFacebook")
 	                                  .scope("user_about_me,user_friends,read_stream")
 	                                  .build();
 	   
@@ -117,17 +117,19 @@ public class LoginFacebook extends HttpServlet {
 				 String fromName = getInsertableString(ithFeed.getFrom().getName());
 				 String story = getInsertableString(ithFeed.getStory());
 				 String message = getInsertableString(ithFeed.getMessage());
+				 String pic = getInsertableString(ithFeed.getPicture());
 				 String sqlInsert = "insert into facebook_feeds values (";
 				 if (ithFeed.getPlace() == null) {
 					 sqlInsert += "'" + feedId + "','" + fromId + "','" 
 							 + fromName + "','" + story + "','" + message
-							 + "','" + "null" + "')";
+							 + "','" + "null" + "','" + pic + "')";
 				 } else {
 					 sqlInsert += "'" + ithFeed.getId() + "','" + ithFeed.getFrom().getId() + "','" 
 							 + ithFeed.getFrom().getName() + "','" + ithFeed.getStory() + "','" + ithFeed.getMessage()
-							 + "','" + getInsertableString(ithFeed.getPlace().getName()) + "')"; 
+							 + "','" + getInsertableString(ithFeed.getPlace().getName()) + "','" + pic + "')";
 				 }
 				 try {
+					 System.out.println(sqlInsert);
 					 st.executeUpdate(sqlInsert);
 				 } catch (SQLException e) {
 					 e.printStackTrace();

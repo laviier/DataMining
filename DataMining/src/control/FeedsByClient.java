@@ -56,6 +56,8 @@ public class FeedsByClient {
 			 place.setName(rs.getString(6));
 			 feed.setPlace(place);
 			 
+			 feed.setPicture(rs.getString(7));
+			 
 			 allFeeds.addFeed(feed);
 		 }
 		 rs.close();
