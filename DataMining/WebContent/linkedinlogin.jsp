@@ -11,7 +11,10 @@
 <div align="center">
 	<form name="loginForm" action="linkedinlogin" method ="GET" align="center">
 	<%session.setAttribute("owncall", "yes");%>
+	<!--  
 		<button type="submit"><img src="img/linkedin-login.png" alt="submit"></button>
+		-->
+		<input type="image" src="img/linkedinlogin.png" alt="Submit">
 	</form>
 </div>
 </body>

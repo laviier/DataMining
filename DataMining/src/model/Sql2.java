@@ -71,6 +71,9 @@ public class Sql2 {
 			String insertTitle = "insert into title (title_name) value ('"+title+"');";
 			String insertCompany = "insert into company (company_name) value ('"+company+"');";
 			
+			String update1 = "update linkedin_user set url='"+url+"' where linkedin_id='"+id+"';";
+			String update2 = "update linkedin_user set profile_url='"+picUr+"' where linkedin_id='"+id+"';";
+			
 			
 			try {
 				int t,c;
@@ -99,8 +102,11 @@ public class Sql2 {
 				try {
 					st4.execute(insertUser);
 					st4.execute(insertPosition);
+					st4.execute(update1);
+					st4.execute(update2);
 				} catch (Exception e) {
-					//System.err.println("user exist! ");
+					st4.execute(update1);
+					st4.execute(update2);
 				}
 			} catch (Exception e) {
 				System.err.println("Got an exception! ");

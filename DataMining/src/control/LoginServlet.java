@@ -29,8 +29,8 @@ public class LoginServlet extends HttpServlet {
 	
 	 public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		 String apiKey = "77q9qfyr9zu5hj";
-		 String apiSecret = "a4T4esIIhtl8k3fN";
+		 String apiKey = "77tdd86y1zq4xu";
+		 String apiSecret = "gG39SPQXrbLl2TGD";
 		 Token EMPTY_TOKEN = null;
 		 String PROTECTED_RESOURCE_URL = "https://api.linkedin.com/v1/people/~/connections:(id,first-name,last-name,picture-url,site-standard-profile-request,location,positions)";
 		 

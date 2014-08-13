@@ -11,7 +11,10 @@
 <div align="center">
 	<form name="login2Form" action="LoginFacebook" method ="GET" align="center">
 	<%session.setAttribute("owncallFB", "yes");%>
+	<!-- 
 		<button type="submit"><img src="img/facebook-login.png" alt="submit"></button>
+		 -->
+		<input type="image" src="img/fblogin.png" alt="Submit">
 	</form>
 </div>
 </body>
