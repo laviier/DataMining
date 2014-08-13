@@ -1,22 +1,32 @@
 package dao;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
 
-public class GetLeads {
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.*;
+
+import com.google.gson.Gson;
+
+@WebServlet("/LeadList")
+public class GetLeads extends HttpServlet {
 	
 	private static String url = "jdbc:mysql://raymond-james.isri.cmu.edu:3306/raymond";
 	private static String contactListQuery = 
 			"SELECT linkedin_user.linkedin_id, linkedin_user.first_name, linkedin_user.last_name, "+
-					"linkedin_user.url, linkedin_user.profile_url, title.title_name, company.company_name "+
+					"linkedin_user.url, linkedin_user.profile_url, title.title_name, company.company_name, title.ave_salary "+
 					"FROM (linkedin_user "+
 					"JOIN positions ON positions.linkedin_id = linkedin_user.linkedin_id "+
 					"JOIN title ON title.title_id = positions.title_id "+
 					"JOIN company ON company.company_id = positions.company_id) "+
 					"where linkedin_user.url != '' AND linkedin_user.is_lead=1 "+
-					"AND positions.is_current=1 "+
-					"ORDER BY title.ave_salary DESC;";
+					"AND positions.is_current=1 AND linkedin_user.is_client=0 "+
+					"ORDER BY title.ave_salary DESC " +
+					"LIMIT 20;";
 	private static Connection conn;
 	private static Statement st;
 	
@@ -28,6 +38,26 @@ public class GetLeads {
 //		System.out.println(l.size());
 //	}
 	
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		List<LeadBean> lead = getContactList();
+		Gson gson = new Gson();
+		response.setContentType("application/json");     
+		PrintWriter out = response.getWriter(); 
+		out.print(gson.toJson(lead));
+		out.flush();
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		doGet(request, response);
+	}
+
 	
 	public static List<LeadBean> getContactList() {
 		connect();
@@ -45,6 +75,12 @@ public class GetLeads {
 				lead.setProfileURL(rs.getString("linkedin_user.profile_url"));
 				lead.setTitle(rs.getString("title.title_name"));
 				lead.setCompany(rs.getString("company.company_name"));
+				
+				int salary = rs.getInt("title.ave_salary");
+				
+				if(salary>=115000) lead.setScore(3);
+				else if (salary<115000 && salary>=80000) lead.setScore(2);
+				else lead.setScore(1);
 				
 				leads.add(lead);
 

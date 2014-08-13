@@ -1,35 +1,38 @@
 package dao;
 
-public class LeadBean {
+public class JobUpdateBean {
 	private String id;
 	private String firstName;
 	private String lastName;
 	private String title;
 	private String company;
+	private String titleNew;
+	private String companyNew;
 	private String url;
 	private String profileURL;
-	private int score;
 	
-	public LeadBean() {
+	public JobUpdateBean() {
 		this.id = "";
 		this.firstName = "";
 		this.lastName = "";
 		this.title = "";
 		this.company = "";
+		this.titleNew = "";
+		this.companyNew = "";
 		this.url = "";
 		this.profileURL = "";
-		this.score = 0;
 	}
 	
-	public LeadBean(String newId) {
+	public JobUpdateBean(String newId) {
 		this.id = newId;
 		this.firstName = "";
 		this.lastName = "";
 		this.title = "";
 		this.company = "";
+		this.titleNew = "";
+		this.companyNew = "";
 		this.url = "";
 		this.profileURL = "";
-		this.score = 0;
 	}
 	
 	public String getId() {
@@ -72,6 +75,22 @@ public class LeadBean {
 		this.company = newCompany;
 	}
 	
+	public String getTitleNew() {
+		return this.titleNew;
+	}
+	
+	public void setTitleNew(String newTitle) {
+		this.titleNew = newTitle;
+	}
+	
+	public String getCompanyNew() {
+		return this.companyNew;
+	}
+	
+	public void setCompanyNew(String newCompany) {
+		this.companyNew = newCompany;
+	}
+	
 	public String getURL() {
 		return this.url;
 	}
@@ -88,17 +107,10 @@ public class LeadBean {
 		this.profileURL = newURL;
 	}
 	
-	public int getScore() {
-		return this.score;
-	}
-	
-	public void setScore(int newScore) {
-		this.score = newScore;
-	}
-	
 	public String toString() {
 		String result = this.id + " " + this.firstName + " " + this.lastName  + " " + this.url
-				  + " " + this.profileURL + " "  + this.title  + " " + this.company + " " + this.score;
+				  + " " + this.profileURL + " " + this.title + " " + this.company  + " " 
+				+ this.titleNew + " " + this.companyNew;
 		return result;
 	}
 }

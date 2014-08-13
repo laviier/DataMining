@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.xml.parsers.*;
@@ -29,14 +31,17 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import dao.JobUpdateBean;
+
 public class LinkedInUserXML {
-	ArrayList<LinkedInUser> users;
+	public ArrayList<LinkedInUser> users;
 	
 	public LinkedInUserXML() {
 		this.users = new ArrayList<LinkedInUser>();
 	}
 
-	public void parseXML(String xmlSource) throws ParserConfigurationException, SAXException, IOException, XPathExpressionException {
+	public List<JobUpdateBean> parseXML(String xmlSource) throws ParserConfigurationException, SAXException, IOException, XPathExpressionException {
+		List<JobUpdateBean> a  = new LinkedList<JobUpdateBean>();
 		
 		//Get the DOM Builder Factory
 	    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -128,11 +133,16 @@ public class LinkedInUserXML {
 	        
 	        users.add(user);
 
-	        Sql.insert_linkedin_user(user.getId(), user.getFirstName(), user.getLastName(), user.getURL(), user.getProfileURL(),
+	        JobUpdateBean job = new JobUpdateBean();
+	        job = Sql.insert_linkedin_user(user.getId(), user.getFirstName(), user.getLastName(), user.getURL(), user.getProfileURL(),
 	        		user.getTitle(),user.getCompany(),user.getLocation(),user.getStartYear(),user.getStartMonth());
-	      }
+	        //System.out.println(job.toString());
+	        if(job.getId()!="") a.add(job);
+	    }
 
 	    }
+	    
+	    return a;
 
 	}
 }

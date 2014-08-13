@@ -52,18 +52,10 @@ public class LoginLinkedin extends HttpServlet {
 			 response.sendRedirect(authorizationUrl);
 			 return;
 		 } else {
-			 
-			 
 			 String code = request.getParameter("code");
 			 
 			 Verifier verifier = new Verifier(code);
 			 Token accessToken = service.getAccessToken(EMPTY_TOKEN, verifier);
-			 
-//			 System.out.println(accessToken.getRawResponse());
-//			 System.out.println(accessToken.getSecret());
-//			 System.out.println(accessToken.getToken());
-//			 System.out.println(accessToken.getExpiresWhen());
-			 
 			 Sql2.insertToken(accessToken.getToken(), accessToken.getRawResponse(), accessToken.getExpiresWhen()+"");
 			 
 			 
@@ -73,8 +65,6 @@ public class LoginLinkedin extends HttpServlet {
 			 service.signRequest(accessToken, requestOauth);
 			 Response responseOauth = requestOauth.send();
 			 
-			 //response.setContentType("text/xml");
-			 //PrintWriter out=response.getWriter();
 			 String connection=responseOauth.getBody();
 			 LinkedInUserXML temp = new LinkedInUserXML();
 			 

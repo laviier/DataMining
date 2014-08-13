@@ -4,8 +4,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.util.Calendar;
-import java.util.Date;
+import java.util.*;
+import dao.JobUpdateBean;
 
 public class Sql {
 	private static String url = "jdbc:mysql://raymond-james.isri.cmu.edu:3306/raymond";
@@ -13,10 +13,11 @@ public class Sql {
 	private static Connection conn1,conn2,conn3,conn4,conn5,conn6,conn7,conn8,conn9;
 	private static Statement st1,st2,st3,st4,st5,st6,st7,st8,st9;
 	
-	public static void insert_linkedin_user(String id, String firstName, String lastName, String url,
+	public static JobUpdateBean insert_linkedin_user(String id, String firstName, String lastName, String url,
 			String picUr, String title, String company, String location,int year,int month){
 			//String id, String firstName, String lastName, String url,String picUrl) {
 		connect();
+		JobUpdateBean jobupdates = new JobUpdateBean();
 		String insertUser = "INSERT INTO linkedin_user (linkedin_id,first_name,last_name,url,profile_url,is_client,is_lead,fa_id,is_first_level) VALUE " +  
 		"('"+id+"','"+firstName+"','"+lastName+"','"+url+"','"+picUr+"',0,0,1,1)";
 		String selectTitle = "select title_id from title where title_name='"+title+"';";
@@ -63,7 +64,11 @@ public class Sql {
 			}
 			
 			String selectPostion = "select position_id from positions where linkedin_id='"+id+"' and start_year="+year+" and start_month="+month+";";
-			String selectPostion2 = "select position_id from positions where linkedin_id='"+id+"' and is_current=1;";
+			String selectPostion2 = "select title.title_name,company.company_name " + 
+					"from positions " +
+					"join title on title.title_id=positions.title_id " +
+					"join company on company.company_id=positions.company_id " +
+					"where linkedin_id='"+id+"' and is_current=1;";
 			
 		    Calendar cal = Calendar.getInstance();
 		    cal.setTime(new Date());
@@ -81,7 +86,16 @@ public class Sql {
 			} else {
 				ResultSet p2 = st9.executeQuery(selectPostion2);
 				if (p2.next()) { 
-					System.out.print(firstName+" "+lastName+" changed job!");
+					jobupdates.setId(id);
+					jobupdates.setFirstName(firstName);
+					jobupdates.setLastName(lastName);
+					jobupdates.setURL(url);
+					jobupdates.setProfileURL(picUr);
+					jobupdates.setTitleNew(title);
+					jobupdates.setCompanyNew(company);
+					jobupdates.setTitle(p2.getString("title.title_name"));
+					jobupdates.setCompany(p2.getString("company.company_name"));
+					//System.out.println(jobupdates.toString());
 					try {
 						st4.execute(updatePosotion);
 						st4.execute(insertPosition);
@@ -100,6 +114,8 @@ public class Sql {
 			System.err.println("Got an exception! ");
 			System.err.println(e.getMessage());
 		}
+		
+		return jobupdates;
 	}
 	
 	private static void connect() {

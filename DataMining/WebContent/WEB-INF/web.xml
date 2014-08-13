@@ -41,5 +41,7 @@
   <servlet-mapping>
     <servlet-name>linkedinlogin</servlet-name>
     <url-pattern>/linkedinlogin</url-pattern>
+    
+    
   </servlet-mapping>
 </web-app>
