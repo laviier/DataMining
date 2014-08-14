@@ -118,15 +118,16 @@ public class LoginFacebook extends HttpServlet {
 				 String story = getInsertableString(ithFeed.getStory());
 				 String message = getInsertableString(ithFeed.getMessage());
 				 String pic = getInsertableString(ithFeed.getPicture());
+				 String time = getInsertableString(ithFeed.getUpdated_time());
 				 String sqlInsert = "insert into facebook_feeds values (";
 				 if (ithFeed.getPlace() == null) {
 					 sqlInsert += "'" + feedId + "','" + fromId + "','" 
 							 + fromName + "','" + story + "','" + message
-							 + "','" + "null" + "','" + pic + "')";
+							 + "','" + "null" + "','" + pic + "','" + time + "')";
 				 } else {
 					 sqlInsert += "'" + ithFeed.getId() + "','" + ithFeed.getFrom().getId() + "','" 
 							 + ithFeed.getFrom().getName() + "','" + ithFeed.getStory() + "','" + ithFeed.getMessage()
-							 + "','" + getInsertableString(ithFeed.getPlace().getName()) + "','" + pic + "')";
+							 + "','" + getInsertableString(ithFeed.getPlace().getName()) + "','" + pic + "','" + time + "')";
 				 }
 				 try {
 					 System.out.println(sqlInsert);
