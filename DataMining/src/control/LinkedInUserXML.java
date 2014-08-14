@@ -137,7 +137,10 @@ public class LinkedInUserXML {
 	        job = Sql.insert_linkedin_user(user.getId(), user.getFirstName(), user.getLastName(), user.getURL(), user.getProfileURL(),
 	        		user.getTitle(),user.getCompany(),user.getLocation(),user.getStartYear(),user.getStartMonth());
 	        //System.out.println(job.toString());
-	        if(job.getId()!="") a.add(job);
+	        if(job.getId()!="") {
+	        	a.add(job);
+	        	System.out.println(job.toString());
+	        }
 	    }
 
 	    }

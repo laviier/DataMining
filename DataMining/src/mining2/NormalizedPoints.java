@@ -6,11 +6,12 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TimerTask;
 
 import model.Sql2;
 
 
-public class NormalizedPoints {
+public class NormalizedPoints extends TimerTask {
 	private static String url = "jdbc:mysql://raymond-james.isri.cmu.edu:3306/raymond";
 	private static Connection conn = null;
 	private static Statement st = null;
@@ -22,6 +23,19 @@ public class NormalizedPoints {
 	private int maxCompanySalary = Integer.MIN_VALUE;
 	private List<Point> points;
 	
+	@Override
+    public void run() {
+        System.out.println("test dataming");
+        NormalizedPoints trial = new NormalizedPoints();
+		connect();
+		List<Point> points = trial.getPoints();
+		KMeansPointSeq kMeans = new KMeansPointSeq();
+		kMeans.cluster(points, 2);
+		for(Point p: points) {
+			Sql2.update(p.getLinkedinId(), p.getClusterIndex());
+		}
+    }
+	
 	public static void main(String[] args) {
 		NormalizedPoints trial = new NormalizedPoints();
 		connect();
@@ -29,16 +43,6 @@ public class NormalizedPoints {
 		KMeansPointSeq kMeans = new KMeansPointSeq();
 		kMeans.cluster(points, 2);
 		for(Point p: points) {
-//			System.out.print("( ");
-//			System.out.printf("%19.17f",p.getX());// "9.2"中的9表示输出的长度，2表示小数点后的位数。
-//			System.out.print(", ");
-//			System.out.printf("%19.17f",p.getY());// "9.2"中的9表示输出的长度，2表示小数点后的位数。
-//			System.out.print(" ) ");
-//			System.out.print("Linkedin ID: "+ p.getLinkedinId());
-//			System.out.print(" isFirst: "+ p.getIsFist());
-//			System.out.print(" isClient: " + p.getIsClient());
-//			System.out.print(" Cluster: " +p.getClusterIndex());
-//			System.out.println();
 			Sql2.update(p.getLinkedinId(), p.getClusterIndex());
 		}
 	}
