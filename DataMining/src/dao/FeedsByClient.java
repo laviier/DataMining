@@ -1,42 +1,73 @@
-package control;
+package dao;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import model.FacebookFeedBean;
 import model.FacebookFeeds;
 import model.FacebookUser;
 import model.FeedPlace;
 
-public class FeedsByClient {
+@WebServlet("/FbFeeds")
+public class FeedsByClient extends HttpServlet {
 	private String json = null;
 	private String clientName;
-	private FacebookFeeds allFeeds;
+	private FacebookFeeds allFeeds = new FacebookFeeds();;
 	
 	private static String url = "jdbc:mysql://raymond-james.isri.cmu.edu:3306/raymond";
 	private static Connection conn = null;
 	private static Statement st = null;
 	
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		FeedsByClient trial = new FeedsByClient("Arsenal");
 		try {
 			System.out.println(trial.getFeeds());
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-	}
+	}*/
 	
-	public FeedsByClient(String name) {
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String name = request.getParameter("name");
 		clientName = name;
-		allFeeds = new FacebookFeeds();
+		try {
+			getFeeds();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		response.setContentType("application/json");     
+		PrintWriter out = response.getWriter(); 
+		out.print(json);
+		out.flush();
 	}
 	
-	public String getFeeds() throws SQLException {
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		doGet(request, response);
+	}
+	
+	public void getFeeds() throws SQLException {
 		 connect();
 		 ResultSet rs = st.executeQuery("select * from facebook_feeds where user_name = '" + clientName + "'");
 		 while (rs.next()) {
@@ -58,13 +89,15 @@ public class FeedsByClient {
 			 
 			 feed.setPicture(rs.getString(7));
 			 
+			 feed.setUpdated_time(rs.getString(8));
+			 
 			 allFeeds.addFeed(feed);
 		 }
 		 rs.close();
 		 
-		 Gson gson = new Gson();
+		 Gson gson = new GsonBuilder().disableHtmlEscaping().create();
 		 json = gson.toJson(allFeeds);
-		 return json;
+		 //return json;
 	}
 	
 	private static void connect() {
