@@ -25,9 +25,8 @@ import model.FeedPlace;
 
 @WebServlet("/FbFeeds")
 public class FeedsByClient extends HttpServlet {
-	private String json = null;
 	private String clientName;
-	private FacebookFeeds allFeeds = new FacebookFeeds();;
+	private FacebookFeeds allFeeds = new FacebookFeeds();
 	
 	private static String url = "jdbc:mysql://raymond-james.isri.cmu.edu:3306/raymond";
 	private static Connection conn = null;
@@ -48,14 +47,18 @@ public class FeedsByClient extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String name = request.getParameter("name");
 		clientName = name;
+		String json = null;
 		try {
-			getFeeds();
+			allFeeds = new FacebookFeeds();
+			json = getFeeds();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		
+		
 		response.setContentType("application/json");     
 		PrintWriter out = response.getWriter(); 
+		System.out.println(json);
 		out.print(json);
 		out.flush();
 	}
@@ -67,7 +70,7 @@ public class FeedsByClient extends HttpServlet {
 		doGet(request, response);
 	}
 	
-	public void getFeeds() throws SQLException {
+	public String getFeeds() throws SQLException {
 		 connect();
 		 ResultSet rs = st.executeQuery("select * from facebook_feeds where user_name = '" + clientName + "'");
 		 while (rs.next()) {
@@ -96,8 +99,8 @@ public class FeedsByClient extends HttpServlet {
 		 rs.close();
 		 
 		 Gson gson = new GsonBuilder().disableHtmlEscaping().create();
-		 json = gson.toJson(allFeeds);
-		 //return json;
+		 String json = gson.toJson(allFeeds);
+		 return json;
 	}
 	
 	private static void connect() {

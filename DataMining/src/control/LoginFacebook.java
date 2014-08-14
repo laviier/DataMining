@@ -82,94 +82,21 @@ public class LoginFacebook extends HttpServlet {
 					 + accessToken.getToken() + "','" + accessToken.getRawResponse()
 					 + "')";
 			 //insert the token to the database;
-			 System.out.println(sqlToken);
+			 System.out.println("token: " + accessToken.getToken());
+			 System.out.println("secret: " + accessToken.getSecret());
+			 System.out.println("raw response: " + accessToken.getRawResponse());
 			 try {
 				st.executeUpdate(sqlToken);
 			 } catch (SQLException e1) {
 				e1.printStackTrace();
 			 }
-
 			 
-			 //connection is a json file
-			 FacebookFeeds feeds = new Gson().fromJson(connection, FacebookFeeds.class);
-			 
-			 List<FacebookFeedBean> allFeeds = feeds.getData();
-			 for (int i = 0; i < allFeeds.size(); i++) {
-				 FacebookFeedBean ithFeed = allFeeds.get(i);
-				 boolean hasIt = false; 
-				 ResultSet rs = null;
-				 try {
-					 rs = st.executeQuery("Select * from facebook_feeds where feeds_id = '" 
-							 + ithFeed.getId() + "'");
-					 while (rs.next()) {
-						 hasIt = true;
-					 }
-				 } catch (SQLException e) {
-					 e.printStackTrace();
-				 }
-				 //the feed has already been stored in the database
-				 if (hasIt) {
-					 continue;
-				 }
-				 
-				 String feedId = getInsertableString(ithFeed.getId());
-				 String fromId = getInsertableString(ithFeed.getFrom().getId());
-				 String fromName = getInsertableString(ithFeed.getFrom().getName());
-				 String story = getInsertableString(ithFeed.getStory());
-				 String message = getInsertableString(ithFeed.getMessage());
-				 String pic = getInsertableString(ithFeed.getPicture());
-				 String time = getInsertableString(ithFeed.getUpdated_time());
-				 String sqlInsert = "insert into facebook_feeds values (";
-				 if (ithFeed.getPlace() == null) {
-					 sqlInsert += "'" + feedId + "','" + fromId + "','" 
-							 + fromName + "','" + story + "','" + message
-							 + "','" + "null" + "','" + pic + "','" + time + "')";
-				 } else {
-					 sqlInsert += "'" + ithFeed.getId() + "','" + ithFeed.getFrom().getId() + "','" 
-							 + ithFeed.getFrom().getName() + "','" + ithFeed.getStory() + "','" + ithFeed.getMessage()
-							 + "','" + getInsertableString(ithFeed.getPlace().getName()) + "','" + pic + "','" + time + "')";
-				 }
-				 try {
-					 System.out.println(sqlInsert);
-					 st.executeUpdate(sqlInsert);
-				 } catch (SQLException e) {
-					 e.printStackTrace();
-				 }
-			 }
-			 
-//			 out.println(connection);
-//			 out.println();
-//			 out.println("This is user's about_me:");
-////			 out.println(s2);
-//			 out.flush();
-		 }
-	    
-	    String redirectURL = "http://128.237.164.68:8080/DataMining/success.jsp";
-		 response.sendRedirect(redirectURL);
+			 String redirectURL = "http://localhost:8080/DataMining/success.jsp";
+			 response.sendRedirect(redirectURL);
+		 } 
 	}
 
-	/**
-	 *  Single Quotation Mark may cause syntax problem
-	 * @param str
-	 * @return string that can be safely insert
-	 */
-	private String getInsertableString(String str) {
-		if (str == null) {
-			return "null";
-		}
-		
-		StringBuilder sb = new StringBuilder();
-		for (int i = 0; i < str.length(); i++) {
-			char c = str.charAt(i);
-			if (c == '\'') {
-				sb.append("\\'");
-				continue;
-			}
-			sb.append(c);
-		}
-		
-		return sb.toString();
-	}
+
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);   
