@@ -15,9 +15,9 @@ public class DataMiningBackground implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent event) {
         scheduler = Executors.newSingleThreadScheduledExecutor();
-        scheduler.scheduleAtFixedRate(new GetSecondFriends(), 0, 3, TimeUnit.MINUTES);
-        scheduler.scheduleAtFixedRate(new AverageSalary(), 0, 3, TimeUnit.MINUTES);
-        scheduler.scheduleAtFixedRate(new NormalizedPoints(), 0, 3, TimeUnit.MINUTES);
+        scheduler.scheduleAtFixedRate(new GetSecondFriends(), 0, 1440, TimeUnit.MINUTES);
+        scheduler.scheduleAtFixedRate(new AverageSalary(), 120, 1440, TimeUnit.MINUTES);
+        scheduler.scheduleAtFixedRate(new NormalizedPoints(), 240, 1440, TimeUnit.MINUTES);
     }
 
     @Override
