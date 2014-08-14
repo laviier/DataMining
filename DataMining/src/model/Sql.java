@@ -101,8 +101,14 @@ public class Sql {
 					jobupdates.setCompany(p2.getString("company.company_name"));
 					//System.out.println(jobupdates.toString());
 					try {
-						st4.execute(updatePosotion);
-						st4.execute(insertPosition);
+						/*
+						 * For test, the two operations are hidden
+						 * For production, two operations should be shown
+						 * 1. update old positon
+						 * 2. insert new postion
+						 */
+						//st4.execute(updatePosotion);
+						//st4.execute(insertPosition);
 					} catch (Exception e) {
 						//System.err.println("position exist! ");
 					}

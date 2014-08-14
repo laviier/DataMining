@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
+import java.util.TimerTask;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -27,14 +28,15 @@ import org.scribe.oauth.OAuthService;
 
 import com.google.gson.Gson;
 
-@WebServlet("/gofb")
-public class GetFBFeeds extends HttpServlet {
+public class GetFBFeeds extends TimerTask {
 	private static String url = "jdbc:mysql://raymond-james.isri.cmu.edu:3306/raymond";
 	private static Connection conn = null;
 	private static Statement st = null;
 	
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String apiKey = "1447625108855686";
+	@Override
+    public void run() {
+        System.out.println("facebook feeds");
+        String apiKey = "1447625108855686";
 	    String apiSecret = "a8ce3774165d43d3bbf2b543afef0e65";
 	    String PROTECTED_RESOURCE_URL = "https://graph.facebook.com/me/home";
 	    
@@ -44,22 +46,13 @@ public class GetFBFeeds extends HttpServlet {
 	                                  .apiSecret(apiSecret)
 	                                  .scope("user_about_me,user_friends,read_stream")
 	                                  .build();
-	    
-	    /*if (request.getSession().getAttribute("owncallFB").equals("yes")) {
-			 request.getSession().setAttribute("owncallFB", "no");
-			 response.sendRedirect(authorizationUrl);
-			 return;
-		 } else {
-			 String code = request.getParameter("code");
-			 Verifier verifier = new Verifier(code);
-			 Token accessToken = service.getAccessToken(EMPTY_TOKEN, verifier);*/
+
          Token accessToken = GetFBToken.getAccessToken();
 		    
 		 OAuthRequest oauthrequest = new OAuthRequest(Verb.GET, PROTECTED_RESOURCE_URL);
 		 service.signRequest(accessToken, oauthrequest);
 		 Response oauthresponse = oauthrequest.send();
 
-		 response.setContentType("application/json");
 		 String connection=oauthresponse.getBody();
 		 
 		 connect();			 
@@ -108,11 +101,7 @@ public class GetFBFeeds extends HttpServlet {
 				 e.printStackTrace();
 			 }
 		 }
-	}
-	
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);   
-	}
+    }
 	
 	/**
 	 *  Single Quotation Mark may cause syntax problem
