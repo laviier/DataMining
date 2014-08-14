@@ -60,6 +60,8 @@ public class Sql2 {
 			String company, String url, String picUr) throws SQLException{
 		//String id, String firstName, String lastName, String url,String picUrl) {
 		connect();
+		title = getInsertableString(title);
+		company = getInsertableString(company);
 		String selectUser = "select linkedin_id from linkedin_user where linkedin_id='"+id+"';";
 		ResultSet hasid = st.executeQuery(selectUser);
 		
@@ -180,5 +182,23 @@ public class Sql2 {
 		      System.err.println("Got an exception! ");
 		      System.err.println(e.getMessage());
 		    }
+	}
+	
+	public static String getInsertableString(String str) {
+		if (str == null) {
+			return "null";
+		}
+		
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < str.length(); i++) {
+			char c = str.charAt(i);
+			if (c == '\'') {
+				sb.append("\\'");
+				continue;
+			}
+			sb.append(c);
+		}
+		
+		return sb.toString();
 	}
 }

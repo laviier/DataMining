@@ -41,7 +41,10 @@
   <servlet-mapping>
     <servlet-name>linkedinlogin</servlet-name>
     <url-pattern>/linkedinlogin</url-pattern>
-    
-    
   </servlet-mapping>
+  
+  <listener>
+    <listener-class>dao.DataMiningBackground</listener-class>
+</listener>
+
 </web-app>

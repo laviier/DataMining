@@ -28,6 +28,7 @@ import org.scribe.oauth.OAuthService;
 import org.xml.sax.SAXException;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import control.LinkedInUserXML;
 
@@ -70,7 +71,7 @@ public class UpdateJob extends HttpServlet {
 			e.printStackTrace();
 		}
 		
-		Gson gson = new Gson();
+		Gson gson = new GsonBuilder().disableHtmlEscaping().create();
 		response.setContentType("application/json");     
 		PrintWriter out = response.getWriter(); 
 		out.print(gson.toJson(updates));

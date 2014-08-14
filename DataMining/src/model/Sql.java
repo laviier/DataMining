@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.*;
+
 import dao.JobUpdateBean;
 
 public class Sql {
@@ -17,6 +18,9 @@ public class Sql {
 			String picUr, String title, String company, String location,int year,int month){
 			//String id, String firstName, String lastName, String url,String picUrl) {
 		connect();
+		title = getInsertableString(title);
+		company = getInsertableString(company);
+		location = getInsertableString(location);
 		JobUpdateBean jobupdates = new JobUpdateBean();
 		String insertUser = "INSERT INTO linkedin_user (linkedin_id,first_name,last_name,url,profile_url,is_client,is_lead,fa_id,is_first_level) VALUE " +  
 		"('"+id+"','"+firstName+"','"+lastName+"','"+url+"','"+picUr+"',0,0,1,1)";
@@ -213,5 +217,28 @@ public class Sql {
 		      System.err.println("Got an exception! ");
 		      System.err.println(e.getMessage());
 		    }
+	}
+	
+	/**
+	 *  Single Quotation Mark may cause syntax problem
+	 * @param str
+	 * @return string that can be safely insert
+	 */
+	public static String getInsertableString(String str) {
+		if (str == null) {
+			return "null";
+		}
+		
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < str.length(); i++) {
+			char c = str.charAt(i);
+			if (c == '\'') {
+				sb.append("\\'");
+				continue;
+			}
+			sb.append(c);
+		}
+		
+		return sb.toString();
 	}
 }

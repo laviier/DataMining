@@ -1,12 +1,13 @@
 package mining2;
 import java.io.IOException;
 import java.sql.*;
+import java.util.TimerTask;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
-public class AverageSalary {
+public class AverageSalary extends TimerTask  {
 	private static String url = "jdbc:mysql://raymond-james.isri.cmu.edu:3306/raymond";
 	private static Connection conn = null;
 	private static Statement st = null;
@@ -14,6 +15,20 @@ public class AverageSalary {
 	private final static String URL1 = "http://www.indeed.com/salary?q1=";
 	private final static String URL2 = "&l1=";
 	private final static String URL3 = "&tm=1";
+	
+	@Override
+    public void run() {
+		System.out.println("get salary");
+		connect();
+		try {
+			setCompanySalary();
+			setTitleSalary();
+			setLocationSalary();
+			conn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+    }
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
