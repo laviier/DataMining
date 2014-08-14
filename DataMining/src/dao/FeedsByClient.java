@@ -47,6 +47,7 @@ public class FeedsByClient extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String name = request.getParameter("name");
 		clientName = name;
+		//System.out.print(clientName);
 		String json = null;
 		try {
 			allFeeds = new FacebookFeeds();
@@ -54,7 +55,6 @@ public class FeedsByClient extends HttpServlet {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
 		
 		response.setContentType("application/json");     
 		PrintWriter out = response.getWriter(); 
@@ -72,7 +72,7 @@ public class FeedsByClient extends HttpServlet {
 	
 	public String getFeeds() throws SQLException {
 		 connect();
-		 ResultSet rs = st.executeQuery("select * from facebook_feeds where user_name = '" + clientName + "'");
+		 ResultSet rs = st.executeQuery("select * from feeds where user_name = '" + clientName + "' and feed_source='facebook';");
 		 while (rs.next()) {
 			 FacebookFeedBean feed = new FacebookFeedBean();
 			 FacebookUser from = new FacebookUser();
@@ -93,6 +93,7 @@ public class FeedsByClient extends HttpServlet {
 			 feed.setPicture(rs.getString(7));
 			 
 			 feed.setUpdated_time(rs.getString(8));
+			 feed.setSource(rs.getString(9));
 			 
 			 allFeeds.addFeed(feed);
 		 }
@@ -100,6 +101,7 @@ public class FeedsByClient extends HttpServlet {
 		 
 		 Gson gson = new GsonBuilder().disableHtmlEscaping().create();
 		 String json = gson.toJson(allFeeds);
+		 //System.out.println(json.toString());
 		 return json;
 	}
 	

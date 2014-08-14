@@ -64,7 +64,7 @@ public class GetFBFeeds extends TimerTask {
 			 boolean hasIt = false; 
 			 ResultSet rs = null;
 			 try {
-				 rs = st.executeQuery("Select * from facebook_feeds where feeds_id = '" 
+				 rs = st.executeQuery("Select * from feeds where feeds_id = '" 
 						 + ithFeed.getId() + "'");
 				 while (rs.next()) {
 					 hasIt = true;
@@ -84,15 +84,15 @@ public class GetFBFeeds extends TimerTask {
 			 String message = getInsertableString(ithFeed.getMessage());
 			 String pic = getInsertableString(ithFeed.getPicture());
 			 String time = getInsertableString(ithFeed.getUpdated_time());
-			 String sqlInsert = "insert into facebook_feeds values (";
+			 String sqlInsert = "insert into feeds values (";
 			 if (ithFeed.getPlace() == null) {
 				 sqlInsert += "'" + feedId + "','" + fromId + "','" 
 						 + fromName + "','" + story + "','" + message
-						 + "','" + "null" + "','" + pic + "','" + time + "')";
+						 + "','" + "null" + "','" + pic + "','" + time + "','" + "facebook" + "')";
 			 } else {
 				 sqlInsert += "'" + ithFeed.getId() + "','" + ithFeed.getFrom().getId() + "','" 
 						 + ithFeed.getFrom().getName() + "','" + ithFeed.getStory() + "','" + ithFeed.getMessage()
-						 + "','" + getInsertableString(ithFeed.getPlace().getName()) + "','" + pic + "','" + time + "')";
+						 + "','" + getInsertableString(ithFeed.getPlace().getName()) + "','" + pic + "','" + time + "','" + "facebook" + "')";
 			 }
 			 try {
 				 System.out.println(sqlInsert);

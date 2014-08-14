@@ -8,6 +8,8 @@ public class FacebookFeedBean {
 	String picture;
 	FeedPlace place;
 	String updated_time;
+	String source;
+	
 	public String getId() {
 		return id;
 	}
@@ -49,6 +51,12 @@ public class FacebookFeedBean {
 	}
 	public void setPlace(FeedPlace place) {
 		this.place = place;
+	}
+	public void setSource(String soure) {
+		this.source = soure;
+	}
+	public String getSource() {
+		return this.source;
 	}
 	
 }
