@@ -6,7 +6,12 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.TimeZone;
 import java.util.TimerTask;
 
 import javax.servlet.ServletException;
@@ -18,6 +23,8 @@ import javax.servlet.http.HttpServletResponse;
 import model.FacebookFeedBean;
 import model.FacebookFeeds;
 
+import org.joda.time.format.DateTimeFormatter;
+import org.joda.time.format.ISODateTimeFormat;
 import org.scribe.builder.ServiceBuilder;
 import org.scribe.builder.api.FacebookApi;
 import org.scribe.model.OAuthRequest;
@@ -84,9 +91,13 @@ public class GetFBFeeds extends TimerTask {
 			 String message = getInsertableString(ithFeed.getMessage());
 			 String pic = getInsertableString(ithFeed.getPicture());
 			 String timeOld = getInsertableString(ithFeed.getCreated_time());
-			 String a = timeOld.replace('T', ' ');
-			 String[] b = a.split("\\+0000");
-			 String time = b[0]; 
+			
+
+			 DateTimeFormatter parser = ISODateTimeFormat.dateTimeNoMillis();
+			 String jtdate = timeOld;
+			 Date timeConvert = parser.parseDateTime(jtdate).toDate();
+			 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			 String time = sdf.format(timeConvert);
 			 
 			 String sqlInsert = "insert into feeds values (";
 			 if (ithFeed.getPlace() == null) {

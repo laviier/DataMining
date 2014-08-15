@@ -27,7 +27,7 @@ import control.SecondUserXML;
 public class GetLinkedInFeeds extends TimerTask {
 	@Override
     public void run() {
-        System.out.println("test linkedinfeed");
+        //System.out.println("test linkedinfeed");
         //mine
 //      String apiKey = "77tdd86y1zq4xu";
 //		String apiSecret = "gG39SPQXrbLl2TGD";
@@ -58,10 +58,10 @@ public class GetLinkedInFeeds extends TimerTask {
 			 LinkedInFeedXML temp = new LinkedInFeedXML();
 			 
 			 String connection=responseOauth.getBody();
-			 System.out.println(connection);
+			 //System.out.println(connection);
 			 
 			 try {
-				 System.out.println("call parse xml");
+				// System.out.println("call parse xml");
 				temp.parseXML(connection);
 			} catch (XPathExpressionException
 					| ParserConfigurationException | SAXException |SQLException | IOException e) {

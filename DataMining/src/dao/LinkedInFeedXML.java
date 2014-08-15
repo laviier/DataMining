@@ -80,15 +80,12 @@ public class LinkedInFeedXML {
 	    	LinkedInFeedBean feed = new LinkedInFeedBean();
 	    	
 	    	String timexml = ((Element) node).getElementsByTagName("timestamp").item(0).getTextContent();
-	    	System.out.println("time stamp: "+timexml);
 	    	long input = Long.parseLong(timexml);
-	    	System.out.print(" long :" + input);
 	    	
 	    	String time = usingDateFormatterWithTimeZone(input);
 	        //Get output in GMT
 	    	//System.out.println(time);
 	    	feed.setTime(time);
-	    	System.out.print(" after convert:" + time);
 	    	feed.setFeed_id(((Element) node).getElementsByTagName("update-key").item(0).getTextContent());
 	        
 	        NodeList tempPositionsNodes = ((Element) node).getElementsByTagName("update-content");
@@ -138,7 +135,7 @@ public class LinkedInFeedXML {
 	        feed.setSource("linkedin");
 	        
 		    if(feed.getUser_id()!="") {
-		        System.out.println(feed.toString());
+		        //System.out.println(feed.toString());
 		        insertFeeds(feed.getFeed_id(),feed.getUser_id(),feed.getFirstName()+" "+feed.getLastName(),feed.getMessage(),
 		        		feed.getPicture(),feed.getTime(),feed.getSource());
 		     }
@@ -156,8 +153,8 @@ public class LinkedInFeedXML {
 		try {
 			st.execute(insertFeed);
 		} catch (Exception e) {
-			System.err.println("Got an exception! ");
-			System.err.println(e.getMessage());
+			//System.err.println("Got an exception! ");
+			//System.err.println(e.getMessage());
 		}
 	}
 

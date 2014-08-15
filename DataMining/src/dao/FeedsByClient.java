@@ -31,23 +31,14 @@ public class FeedsByClient extends HttpServlet {
 	private static String url = "jdbc:mysql://raymond-james.isri.cmu.edu:3306/raymond";
 	private static Connection conn = null;
 	private static Statement st = null;
-	
-	/*public static void main(String[] args) {
-		FeedsByClient trial = new FeedsByClient("Arsenal");
-		try {
-			System.out.println(trial.getFeeds());
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}*/
-	
+
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String name = request.getParameter("name");
 		clientName = name;
-		//System.out.print(clientName);
+		System.out.print(clientName);
 		String json = null;
 		try {
 			allFeeds = new FacebookFeeds();
@@ -79,7 +70,6 @@ public class FeedsByClient extends HttpServlet {
 			 FeedPlace place = new FeedPlace();
 			 
 			 feed.setId(rs.getString(1));
-			 
 			 from.setId(rs.getString(2));
 			 from.setName(rs.getString(3));
 			 feed.setFrom(from);
