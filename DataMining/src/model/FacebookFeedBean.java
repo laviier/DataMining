@@ -7,7 +7,7 @@ public class FacebookFeedBean {
 	String story;
 	String picture;
 	FeedPlace place;
-	String updated_time;
+	String created_time;
 	String source;
 	
 	public String getId() {
@@ -16,11 +16,11 @@ public class FacebookFeedBean {
 	public void setId(String id) {
 		this.id = id;
 	}
-	public String getUpdated_time() {
-		return updated_time;
+	public String getCreated_time() {
+		return created_time;
 	}
-	public void setUpdated_time(String updated_time) {
-		this.updated_time = updated_time;
+	public void setCreated_time(String updated_time) {
+		this.created_time = updated_time;
 	}
 	public FacebookUser getFrom() {
 		return from;

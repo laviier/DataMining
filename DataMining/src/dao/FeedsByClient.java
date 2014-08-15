@@ -92,7 +92,7 @@ public class FeedsByClient extends HttpServlet {
 			 
 			 feed.setPicture(rs.getString(7));
 			 
-			 feed.setUpdated_time(rs.getString(8));
+			 feed.setCreated_time(rs.getString(8));
 			 feed.setSource(rs.getString(9));
 			 
 			 allFeeds.addFeed(feed);
