@@ -31,7 +31,7 @@ public class GetFBToken {
 			System.err.println(e.getMessage());
 		}
 
-		System.out.println("token: " + token[0] + " raw_response: " + token[1]);
+		//System.out.println("token: " + token[0] + " raw_response: " + token[1]);
 		Token accessToken = new Token(token[0], "", token[1]);
 		return accessToken;
 	}

@@ -88,35 +88,43 @@ public class Sql {
 			if (p.next()) { 
 				//
 			} else {
-				ResultSet p2 = st9.executeQuery(selectPostion2);
-				if (p2.next()) { 
-					jobupdates.setId(id);
-					jobupdates.setFirstName(firstName);
-					jobupdates.setLastName(lastName);
-					jobupdates.setURL(url);
-					jobupdates.setProfileURL(picUr);
-					jobupdates.setTitleNew(title);
-					jobupdates.setCompanyNew(company);
-					jobupdates.setTitle(p2.getString("title.title_name"));
-					jobupdates.setCompany(p2.getString("company.company_name"));
-					//System.out.println(jobupdates.toString());
-					try {
-						/*
-						 * For test, the two operations are hidden
-						 * For production, two operations should be shown
-						 * 1. update old positon
-						 * 2. insert new postion
-						 */
-						//st4.execute(updatePosotion);
-						//st4.execute(insertPosition);
-					} catch (Exception e) {
-						//System.err.println("position exist! ");
-					}
-				} else {
+				if (year==0) {
 					try {
 						st4.execute(insertPosition);
 					} catch (Exception e) {
 						//System.err.println("position exist! ");
+					}
+				} else {
+					ResultSet p2 = st9.executeQuery(selectPostion2);
+					if (p2.next()) { 
+						jobupdates.setId(id);
+						jobupdates.setFirstName(firstName);
+						jobupdates.setLastName(lastName);
+						jobupdates.setURL(url);
+						jobupdates.setProfileURL(picUr);
+						jobupdates.setTitleNew(title);
+						jobupdates.setCompanyNew(company);
+						jobupdates.setTitle(p2.getString("title.title_name"));
+						jobupdates.setCompany(p2.getString("company.company_name"));
+						//System.out.println(jobupdates.toString());
+						try {
+							/*
+							 * For test, the two operations are hidden
+							 * For production, two operations should be shown
+							 * 1. update old positon
+							 * 2. insert new postion
+							 */
+							//st4.execute(updatePosotion);
+							//st4.execute(insertPosition);
+						} catch (Exception e) {
+							//System.err.println("position exist! ");
+						}
+					} else {
+						try {
+							st4.execute(insertPosition);
+						} catch (Exception e) {
+							//System.err.println("position exist! ");
+						}
 					}
 				}
 			}

@@ -38,7 +38,7 @@ public class FeedsByClient extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String name = request.getParameter("name");
 		clientName = name;
-		System.out.print(clientName);
+		//System.out.print(clientName);
 		String json = null;
 		try {
 			allFeeds = new FacebookFeeds();
@@ -105,8 +105,8 @@ public class FeedsByClient extends HttpServlet {
 	      // create the java statement
 	      st = conn.createStatement();	      
 	    } catch (Exception e) {
-	      System.err.println("Got an exception! ");
-	      System.err.println(e.getMessage());
+	      //System.err.println("Got an exception! ");
+	      //System.err.println(e.getMessage());
 	    }
 	}
 }

@@ -110,7 +110,7 @@ public class GetFBFeeds extends TimerTask {
 						 + "','" + getInsertableString(ithFeed.getPlace().getName()) + "','" + pic + "','" + time + "','" + "facebook" + "')";
 			 }
 			 try {
-				 System.out.println(sqlInsert);
+				 //System.out.println(sqlInsert);
 				 st.executeUpdate(sqlInsert);
 			 } catch (SQLException e) {
 				 e.printStackTrace();
@@ -151,8 +151,8 @@ public class GetFBFeeds extends TimerTask {
 	      // create the java statement
 	      st = conn.createStatement();	      
 	    } catch (Exception e) {
-	      System.err.println("Got an exception! ");
-	      System.err.println(e.getMessage());
+	      //System.err.println("Got an exception! ");
+	      //System.err.println(e.getMessage());
 	    }
 	}
 	
