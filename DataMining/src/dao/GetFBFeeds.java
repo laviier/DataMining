@@ -83,7 +83,7 @@ public class GetFBFeeds extends TimerTask {
 			 String story = getInsertableString(ithFeed.getStory());
 			 String message = getInsertableString(ithFeed.getMessage());
 			 String pic = getInsertableString(ithFeed.getPicture());
-			 String timeOld = getInsertableString(ithFeed.getUpdated_time());
+			 String timeOld = getInsertableString(ithFeed.getCreated_time());
 			 String a = timeOld.replace('T', ' ');
 			 String[] b = a.split("\\+0000");
 			 String time = b[0]; 
