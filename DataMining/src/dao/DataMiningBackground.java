@@ -24,7 +24,7 @@ public class DataMiningBackground implements ServletContextListener {
        // scheduler.scheduleAtFixedRate(new GetSecondFriends(), 0, 1440, TimeUnit.MINUTES);
        // scheduler.scheduleAtFixedRate(new AverageSalary(), 120, 1440, TimeUnit.MINUTES);
     //    scheduler.scheduleAtFixedRate(new NormalizedPoints(), 240, 1440, TimeUnit.MINUTES);
-      //  scheduler.scheduleAtFixedRate(new GetFBFeeds(), 0, 30, TimeUnit.MINUTES);
+        scheduler.scheduleAtFixedRate(new GetFBFeeds(), 0, 30, TimeUnit.MINUTES);
         
         scheduler.scheduleAtFixedRate(new GetLinkedInFeeds(), 0, 30, TimeUnit.MINUTES);
     }

@@ -29,15 +29,6 @@ public class GetLeads extends HttpServlet {
 					"LIMIT 20;";
 	private static Connection conn;
 	private static Statement st;
-	
-//	public static void main(String[] args) {
-//		List<LeadBean> l = getContactList();
-//		for (LeadBean a: l) {
-//			System.out.println(a.toString());
-//		}
-//		System.out.println(l.size());
-//	}
-	
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)

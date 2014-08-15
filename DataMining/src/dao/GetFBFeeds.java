@@ -83,7 +83,11 @@ public class GetFBFeeds extends TimerTask {
 			 String story = getInsertableString(ithFeed.getStory());
 			 String message = getInsertableString(ithFeed.getMessage());
 			 String pic = getInsertableString(ithFeed.getPicture());
-			 String time = getInsertableString(ithFeed.getUpdated_time());
+			 String timeOld = getInsertableString(ithFeed.getUpdated_time());
+			 String a = timeOld.replace('T', ' ');
+			 String[] b = a.split("\\+0000");
+			 String time = b[0]; 
+			 
 			 String sqlInsert = "insert into feeds values (";
 			 if (ithFeed.getPlace() == null) {
 				 sqlInsert += "'" + feedId + "','" + fromId + "','" 

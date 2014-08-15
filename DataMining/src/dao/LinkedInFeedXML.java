@@ -6,8 +6,12 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.TimeZone;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -24,7 +28,6 @@ import model.SecondFriends;
 import model.Sql2;
 
 public class LinkedInFeedXML {
-	ArrayList<LinkedInFeedBean> feeds;
 	private static String url = "jdbc:mysql://raymond-james.isri.cmu.edu:3306/raymond";
 	//private static String contactListQuery = "select * from client, physical_address, email where client.address_id = physical_address.address_id and client.email_id = email.email_id;";
 	private static Connection conn;
@@ -32,11 +35,10 @@ public class LinkedInFeedXML {
 	
 	
 	public LinkedInFeedXML() {
-		this.feeds = new ArrayList<LinkedInFeedBean>();
 	}
 	
-public void parseXML(String xmlSource) throws ParserConfigurationException, SAXException, IOException, XPathExpressionException, SQLException {
-		
+	public void parseXML(String xmlSource) throws ParserConfigurationException, SAXException, IOException, XPathExpressionException, SQLException {
+    	
 		//Get the DOM Builder Factory
 	    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 
@@ -68,7 +70,7 @@ public void parseXML(String xmlSource) throws ParserConfigurationException, SAXE
 	  
 	    //Iterating through the nodes and extracting the data.
 		NodeList nodeList = document.getElementsByTagName("update");
-
+		
 	    for (int i = 0; i < nodeList.getLength(); i++) {
 
 	    	//We have encountered an <employee> tag.
@@ -77,8 +79,16 @@ public void parseXML(String xmlSource) throws ParserConfigurationException, SAXE
 	    		
 	    	LinkedInFeedBean feed = new LinkedInFeedBean();
 	    	
-	    	String time = new Date(((Element) node).getElementsByTagName("timestap").item(0).getTextContent()).toLocaleString();
+	    	String timexml = ((Element) node).getElementsByTagName("timestamp").item(0).getTextContent();
+	    	System.out.println("time stamp: "+timexml);
+	    	long input = Long.parseLong(timexml);
+	    	System.out.print(" long :" + input);
+	    	
+	    	String time = usingDateFormatterWithTimeZone(input);
+	        //Get output in GMT
+	    	//System.out.println(time);
 	    	feed.setTime(time);
+	    	System.out.print(" after convert:" + time);
 	    	feed.setFeed_id(((Element) node).getElementsByTagName("update-key").item(0).getTextContent());
 	        
 	        NodeList tempPositionsNodes = ((Element) node).getElementsByTagName("update-content");
@@ -103,7 +113,7 @@ public void parseXML(String xmlSource) throws ParserConfigurationException, SAXE
 						        	Node tempContentNode = tempContentNodes.item(0);
 						        	if (tempContentNode instanceof Element) {
 						        		try {
-						        			feed.setMessage(((Element) tempContentNode).getElementsByTagName("submitted-url").item(0).getTextContent());
+						        			feed.setPicture(((Element) tempContentNode).getElementsByTagName("submitted-url").item(0).getTextContent());
 						        		} catch (NullPointerException e){
 						        			//e.printStackTrace();
 						        		}
@@ -125,25 +135,30 @@ public void parseXML(String xmlSource) throws ParserConfigurationException, SAXE
 	        	}
 	        }
 	        
-	        feeds.add(feed);
+	        feed.setSource("linkedin");
 	        
-	        System.out.println(feed.toString());
-	        
-	        //Sql2.insert(user.getId(), user.getFirstName(), user.getLastName(), user.getTitle(),user.getCompany(), user.getURL(), user.getProfileURL());
-
-//	        Sql.insert_linkedin_user(user.getId(), user.getFirstName(), user.getLastName(), user.getURL(), user.getProfileURL(),
-//	        		user.getTitle(),user.getCompany(),user.getLocation(),user.getStartYear(),user.getStartMonth());
+		    if(feed.getUser_id()!="") {
+		        System.out.println(feed.toString());
+		        insertFeeds(feed.getFeed_id(),feed.getUser_id(),feed.getFirstName()+" "+feed.getLastName(),feed.getMessage(),
+		        		feed.getPicture(),feed.getTime(),feed.getSource());
+		     }
 	      }
 
 	    }
 
 	}
 
-	private static void insertFeeds(String feedid, String userid, String name, String message, String picurl, String time) {
+	private static void insertFeeds(String feedid, String userid, String name, String message, String picurl, String time, String source) {
 		connect();
 		message = getInsertableString(message);
-		String insertUser = "INSERT INTO feeds (feeds_id,user_id,user_name,feed_message,feed_pic,feed_time,feed_source) VALUE " +  
-				"('"+feedid+"','"+userid+"','"+name+"','"+message+"','"+picurl+"','"+time+"')";
+		String insertFeed = "INSERT INTO feeds (feeds_id,user_id,user_name,feed_message,feed_pic,feed_time,feed_source) VALUE " +  
+				"('"+feedid+"','"+userid+"','"+name+"','"+message+"','"+picurl+"','"+time +"','"+source +"')";
+		try {
+			st.execute(insertFeed);
+		} catch (Exception e) {
+			System.err.println("Got an exception! ");
+			System.err.println(e.getMessage());
+		}
 	}
 
 
@@ -185,4 +200,17 @@ public void parseXML(String xmlSource) throws ParserConfigurationException, SAXE
 		
 		return sb.toString();
 	}
+	
+	
+
+	private String usingDateFormatterWithTimeZone(long input){
+		Date date = new Date(input);
+		//Calendar cal = new GregorianCalendar(TimeZone.getTimeZone("UTC"));
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		//sdf.setCalendar(cal);
+		//cal.setTime(date);
+		return sdf.format(date);
+
+	}
+
 }

@@ -23,7 +23,7 @@ import model.FacebookFeeds;
 import model.FacebookUser;
 import model.FeedPlace;
 
-@WebServlet("/FbFeeds")
+@WebServlet("/Feeds")
 public class FeedsByClient extends HttpServlet {
 	private String clientName;
 	private FacebookFeeds allFeeds = new FacebookFeeds();
@@ -72,7 +72,7 @@ public class FeedsByClient extends HttpServlet {
 	
 	public String getFeeds() throws SQLException {
 		 connect();
-		 ResultSet rs = st.executeQuery("select * from feeds where user_name = '" + clientName + "' and feed_source='facebook';");
+		 ResultSet rs = st.executeQuery("select * from feeds where user_name = '" + clientName + "' order by feed_time DESC;");
 		 while (rs.next()) {
 			 FacebookFeedBean feed = new FacebookFeedBean();
 			 FacebookUser from = new FacebookUser();

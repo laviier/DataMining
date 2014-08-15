@@ -61,14 +61,10 @@ public class GetLinkedInFeeds extends TimerTask {
 			 System.out.println(connection);
 			 
 			 try {
-				try {
-					temp.parseXML(connection);
-				} catch (SQLException | IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				 System.out.println("call parse xml");
+				temp.parseXML(connection);
 			} catch (XPathExpressionException
-					| ParserConfigurationException | SAXException e) {
+					| ParserConfigurationException | SAXException |SQLException | IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
