@@ -24,10 +24,8 @@ public class KMeansPointSeq {
 
 		double minX = Double.MAX_VALUE;
 		double minY = Double.MAX_VALUE;
-		double minZ = Double.MAX_VALUE;
 		double maxX = 0.0;
 		double maxY = 0.0;
-		double maxZ = 0.0;
 
 		for (Point p : points) {
 			if (p.getX() < minX) {
@@ -36,25 +34,20 @@ public class KMeansPointSeq {
 			if (p.getY() < minY) {
 				minY = p.getY();
 			}
-			if (p.getZ() < minZ) {
-				minZ = p.getZ();
-			}
+			
 			if (p.getX() > maxX) {
 				maxX = p.getX();
 			}
 			if (p.getY() > maxY) {
 				maxY = p.getY();
 			}
-			if (p.getZ() > maxZ) {
-				maxZ = p.getZ();
-			}
+			
 		}
 
 		double betweenY = Math.abs((maxY - minY)) / (K - 1);
 		double betweenX = Math.abs((maxX - minX)) / (K - 1);
-		double betweenZ = Math.abs((maxZ - minZ)) / (K - 1);
 		for (int i = 0; i < K; i++) {
-			clusters[i] = new Point(minX + i * betweenX, minY + i * betweenY, minZ + i * betweenZ);
+			clusters[i] = new Point(minX + i * betweenX, minY + i * betweenY);
 		}
 
 		Random r = new Random();
@@ -91,19 +84,17 @@ public class KMeansPointSeq {
 			for (int j = 0; j < K; j++) {
 				double sumX = 0.0;
 				double sumY = 0.0;
-				double sumZ = 0.0;
 				int size = new_clusters.get(j).size();
 				for (Point np : new_clusters.get(j)) {
 					sumX += np.getX();
 					sumY += np.getY();
-					sumZ += np.getZ();
 				}
 
 				if (size == 0) {
 					clusters[j] = new Point(r.nextDouble() * (maxX - minX),
-							r.nextDouble() * (maxY - minY),r.nextDouble() * (maxZ - minZ));
+							r.nextDouble() * (maxY - minY));
 				} else {
-					clusters[j] = new Point(sumX / size, sumY / size, sumZ / size);
+					clusters[j] = new Point(sumX / size, sumY / size);
 				}
 			}
 		}
@@ -116,34 +107,7 @@ public class KMeansPointSeq {
 
 	private double getDistance(Point a, Point b) {
 		return Math.pow(
-				(Math.pow((a.getX() - b.getX()), 2) + Math.pow((a.getY() - b.getY()), 2) + 
-				Math.pow((a.getZ() - b.getZ()), 2)), 0.5);
+				(Math.pow((a.getX() - b.getX()), 2) + Math.pow((a.getY() - b.getY()), 2)), 0.5);
 	}
 
-//	public static void main(String[] args) {
-//		if (args.length < 2) {
-//			System.out.println("Please specify K and input file path");
-//			return;
-//		}
-//
-//		int K = 1;
-//		try {
-//			K = Integer.parseInt(args[0]);
-//		} catch (NumberFormatException e) {
-//			System.out.println("K should be a number");
-//			return;
-//		}
-//
-//		long startTime = System.currentTimeMillis();
-//
-//		ArrayList<Point> points = ReadInput.readPoint(args[1]);
-//		KMeansPointSeq kMeans = new KMeansPointSeq();
-//		kMeans.cluster(points, K);
-//
-//		long endTime = System.currentTimeMillis();
-//
-//		// Print out time
-//		// System.out.println("Running Time: " + (endTime - startTime));
-//
-//	}
 }

@@ -6,9 +6,12 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TimerTask;
+
+import model.Sql2;
 
 
-public class NormalizedPoints {
+public class NormalizedPoints extends TimerTask {
 	private static String url = "jdbc:mysql://raymond-james.isri.cmu.edu:3306/raymond";
 	private static Connection conn = null;
 	private static Statement st = null;
@@ -18,9 +21,20 @@ public class NormalizedPoints {
 	private int maxTitleSalary = Integer.MIN_VALUE;
 	private int minCompanySalary = Integer.MAX_VALUE;
 	private int maxCompanySalary = Integer.MIN_VALUE;
-	private int minLocationSalary = Integer.MAX_VALUE;
-	private int maxLocationSalary = Integer.MIN_VALUE;
 	private List<Point> points;
+	
+	@Override
+    public void run() {
+        System.out.println("test dataming");
+        NormalizedPoints trial = new NormalizedPoints();
+		connect();
+		List<Point> points = trial.getPoints();
+		KMeansPointSeq kMeans = new KMeansPointSeq();
+		kMeans.cluster(points, 2);
+		for(Point p: points) {
+			Sql2.update(p.getLinkedinId(), p.getClusterIndex());
+		}
+    }
 	
 	public static void main(String[] args) {
 		NormalizedPoints trial = new NormalizedPoints();
@@ -29,17 +43,7 @@ public class NormalizedPoints {
 		KMeansPointSeq kMeans = new KMeansPointSeq();
 		kMeans.cluster(points, 2);
 		for(Point p: points) {
-			System.out.print("( ");
-			System.out.printf("%19.17f",p.getX());// "9.2"中的9表示输出的长度，2表示小数点后的位数。
-			System.out.print(", ");
-			System.out.printf("%19.17f",p.getY());// "9.2"中的9表示输出的长度，2表示小数点后的位数。
-			System.out.print(", ");
-			System.out.printf("%19.17f",p.getZ());// "9.2"中的9表示输出的长度，2表示小数点后的位数。
-			System.out.print(" ) ");
-			System.out.print("Linkedin ID: "+ p.getLinkedinId());
-			System.out.print(" isClient: " + p.getIsClient());
-			System.out.print(" Cluster: " +p.getClusterIndex());
-			System.out.println();
+			Sql2.update(p.getLinkedinId(), p.getClusterIndex());
 		}
 	}
 	
@@ -54,21 +58,20 @@ public class NormalizedPoints {
 	 * @throws SQLException
 	 */
 	private void getUsersFromDB() throws SQLException {
-		ResultSet rs = st.executeQuery("Select linkedin_id,is_client from linkedin_user");
+		ResultSet rs = st.executeQuery("Select linkedin_id,is_client,is_first_level from linkedin_user");
 		while (rs.next()) {
-			users.add(new LinkedInUser(rs.getString("linkedin_id"),rs.getInt("is_client")));
+			users.add(new LinkedInUser(rs.getString("linkedin_id"),rs.getInt("is_client"),rs.getInt("is_first_level")));
 		}
 		
 		//find the most current job of this user in the positions table
 		for (int i = 0; i < users.size(); i++) {
-			String sqlSelect = "Select linkedin_id, title_id, company_id, location_id "
+			String sqlSelect = "Select title_id, company_id "
 					+ "from positions where linkedin_id='" + users.get(i).getLinkedinId() 
 					+ "' and is_current=" + 1;
 			rs = st.executeQuery(sqlSelect);
 			rs.next();//we have made sure every user has at least one job
 			users.get(i).setTitleId(rs.getInt("title_id"));
 			users.get(i).setCompanyId(rs.getInt("company_id"));
-			users.get(i).setLocationId(rs.getInt("location_id"));
 		}
 	}
 	
@@ -96,15 +99,9 @@ public class NormalizedPoints {
 			maxCompanySalary = Math.max(maxCompanySalary, rs.getInt(1));
 			salaries.get(i).setAverageCompanySalary(rs.getInt(1));
 			
-			String selectLocationSalary = "Select ave_salary from location where location_id = '" + users.get(i).getLocationId() + "'";
-			rs = st.executeQuery(selectLocationSalary);
-			rs.next();
-			minLocationSalary = Math.min(minLocationSalary, rs.getInt(1));
-			maxLocationSalary = Math.max(maxLocationSalary, rs.getInt(1));
-			salaries.get(i).setAverageLocationSalary(rs.getInt(1));
-			
 			salaries.get(i).setIsClient(users.get(i).getIsClient());
 			salaries.get(i).setLinkedinId(users.get(i).getLinkedinId());
+			salaries.get(i).setIsFirst(users.get(i).getIsFist());
 		}
 	}
 	
@@ -122,10 +119,10 @@ public class NormalizedPoints {
 		for (int i = 0; i < salaries.size(); i++) {
 			double x = (double)(salaries.get(i).getAverageTitleSalary() - minTitleSalary) / (double)(maxTitleSalary - minTitleSalary);
 			double y = (double)(salaries.get(i).getAverageCompanySalary() - minCompanySalary) / (double)(maxCompanySalary - minCompanySalary);
-			double z = (double)(salaries.get(i).getAverageLocationSalary() - minLocationSalary) / (double)(maxLocationSalary - minLocationSalary);
-			Point p = new Point(x, y, z);
+			Point p = new Point(x, y);
 			p.setIsClient(salaries.get(i).getIsClient());
 			p.setLinkedinId(salaries.get(i).getLinkedinId());
+			p.setIsFirst(salaries.get(i).getIsFist());
 			points.add(p);
 			//System.out.println(x + " " + y + " " + z);
 		}
