@@ -21,7 +21,7 @@ public class AverageSalary {
 		try {
 			setCompanySalary();
 			setTitleSalary();
-			setLocationSalary();
+			//setLocationSalary();
 			conn.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -74,7 +74,7 @@ public class AverageSalary {
 	    String query = "update title set ave_salary = ? where title_name = ?";
 	    PreparedStatement preparedStmt = conn.prepareStatement(query);
 	    
-		ResultSet rs = st.executeQuery("Select title_name from title");
+		ResultSet rs = st.executeQuery("Select title_name from title where ave_salary is null");
 		while (rs.next()) {
 			int averageTitleSalary = 0;
 			String title = rs.getString(1);
@@ -111,7 +111,7 @@ public class AverageSalary {
 	    String query = "update company set ave_salary = ? where company_name = ?";
 	    PreparedStatement preparedStmt = conn.prepareStatement(query);
 	    
-		ResultSet rs = st.executeQuery("Select company_name from company");
+		ResultSet rs = st.executeQuery("Select company_name from company where ave_salary is null");
 		while (rs.next()) {
 			int averageCompanySalary = 0;
 			String company = rs.getString(1);
@@ -160,7 +160,7 @@ public class AverageSalary {
 	    String query = "update location set ave_salary = ? where location_name = ?";
 	    PreparedStatement preparedStmt = conn.prepareStatement(query);
 	    
-	    ResultSet rs = st.executeQuery("Select location_name from location");
+	    ResultSet rs = st.executeQuery("Select location_name from location where ave_salary is null");
 		while (rs.next()) {
 			int averageLocationSalary = 0;
 			String location = rs.getString(1);

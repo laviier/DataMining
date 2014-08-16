@@ -22,6 +22,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import model.FacebookFeedBean;
 import model.FacebookFeeds;
+import model.FacebookImage;
+import model.FacebookImages;
 
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
@@ -84,12 +86,20 @@ public class GetFBFeeds extends TimerTask {
 				 continue;
 			 }
 			 
+			 //To get right size of image;
+			 String pic = "null";
+			 if (ithFeed.getObject_id() != null) {
+				 pic = getRightSize(ithFeed.getObject_id());
+			 }
+			 if (pic.equals("null")) {
+				 pic = getInsertableString(ithFeed.getPicture());
+			 }
+			 
 			 String feedId = getInsertableString(ithFeed.getId());
 			 String fromId = getInsertableString(ithFeed.getFrom().getId());
 			 String fromName = getInsertableString(ithFeed.getFrom().getName());
 			 String story = getInsertableString(ithFeed.getStory());
 			 String message = getInsertableString(ithFeed.getMessage());
-			 String pic = getInsertableString(ithFeed.getPicture());
 			 String timeOld = getInsertableString(ithFeed.getCreated_time());
 			
 
@@ -110,13 +120,49 @@ public class GetFBFeeds extends TimerTask {
 						 + "','" + getInsertableString(ithFeed.getPlace().getName()) + "','" + pic + "','" + time + "','" + "facebook" + "')";
 			 }
 			 try {
-				 //System.out.println(sqlInsert);
+				 System.out.println(sqlInsert);
 				 st.executeUpdate(sqlInsert);
 			 } catch (SQLException e) {
 				 e.printStackTrace();
 			 }
 		 }
     }
+	
+	private String getRightSize(String objectId) {
+        String apiKey = "1447625108855686";
+	    String apiSecret = "a8ce3774165d43d3bbf2b543afef0e65";
+	    String PROTECTED_RESOURCE_URL = "https://graph.facebook.com/v2.1/" + objectId;
+	    
+	    OAuthService service = new ServiceBuilder()
+	                                  .provider(FacebookApi.class)
+	                                  .apiKey(apiKey)
+	                                  .apiSecret(apiSecret)
+	                                  .build();
+
+         Token accessToken = GetFBToken.getAccessToken();
+		    
+         try {
+			 OAuthRequest oauthrequest = new OAuthRequest(Verb.GET, PROTECTED_RESOURCE_URL);
+			 service.signRequest(accessToken, oauthrequest);
+			 Response oauthresponse = oauthrequest.send();
+	
+			 String connection=oauthresponse.getBody();
+			 System.out.println("images jason: " + connection);
+			 FacebookImages images = new Gson().fromJson(connection, FacebookImages.class);
+			 
+			 List<FacebookImage> allImages = images.getImages();
+			 FacebookImage curr = null;
+			 for (int i = 0; i < allImages.size(); i++) {
+				 curr = allImages.get(i); 
+				 if (curr.getWidth() >= 300) {
+					 System.out.println("source(>=300): " + curr.getSource());
+					 return curr.getSource();
+				 }
+			 }
+         } finally {
+         }
+         return "null";
+	}
 	
 	/**
 	 *  Single Quotation Mark may cause syntax problem

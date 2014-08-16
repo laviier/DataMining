@@ -9,6 +9,7 @@ public class FacebookFeedBean {
 	FeedPlace place;
 	String created_time;
 	String source;
+	String object_id;
 	
 	public String getId() {
 		return id;
@@ -58,5 +59,10 @@ public class FacebookFeedBean {
 	public String getSource() {
 		return this.source;
 	}
-	
+	public String getObject_id() {
+		return object_id;
+	}
+	public void setObject_id(String object_id) {
+		this.object_id = object_id;
+	}
 }
