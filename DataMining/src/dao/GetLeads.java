@@ -11,6 +11,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 @WebServlet("/LeadList")
 public class GetLeads extends HttpServlet {
@@ -35,7 +36,7 @@ public class GetLeads extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		List<LeadBean> lead = getContactList();
-		Gson gson = new Gson();
+		Gson gson = new GsonBuilder().disableHtmlEscaping().create();
 		response.setContentType("application/json");     
 		PrintWriter out = response.getWriter(); 
 		out.print(gson.toJson(lead));

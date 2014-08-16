@@ -2,16 +2,16 @@ package mining;
 public class AverageSalariesOfLinkedInUser {
 	private int averageTitleSalary;
 	private int averageCompanySalary;
-	private int averageLocationSalary;
 	private String linkedinId;
 	private int isClient;
+	private int isFirst;
 	
 	public AverageSalariesOfLinkedInUser() {
 		this.averageTitleSalary = -1;
 		this.averageCompanySalary = -1;
-		this.averageLocationSalary = -1;
 		this.linkedinId = "";
 		this.isClient = -1;
+		this.isFirst = -1;
 	}
 	
 	public int getAverageTitleSalary() {
@@ -25,12 +25,6 @@ public class AverageSalariesOfLinkedInUser {
 	}
 	public void setAverageCompanySalary(int averageCompanySalary) {
 		this.averageCompanySalary = averageCompanySalary;
-	}
-	public int getAverageLocationSalary() {
-		return averageLocationSalary;
-	}
-	public void setAverageLocationSalary(int averageLocationSalary) {
-		this.averageLocationSalary = averageLocationSalary;
 	}
 	public int getIsClient() {
 		return this.isClient;
@@ -48,6 +42,13 @@ public class AverageSalariesOfLinkedInUser {
 		this.linkedinId = linkedinId;
 	}
 	public String toString() {
-		return averageTitleSalary + " " + averageCompanySalary + " " + averageLocationSalary;
+		return averageTitleSalary + " " + averageCompanySalary;
+	}
+	public int getIsFist() {
+		return this.isFirst;
+	}
+	
+	public void setIsFirst(int isFirst) {
+		this.isFirst = isFirst;
 	}
 }

@@ -3,8 +3,9 @@ package dao;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import mining2.AverageSalary;
-import mining2.NormalizedPoints;
+
+import mining.AverageSalary;
+import mining.NormalizedPoints;
 
 import javax.servlet.*;
 
@@ -24,7 +25,7 @@ public class DataMiningBackground implements ServletContextListener {
        // scheduler.scheduleAtFixedRate(new GetSecondFriends(), 0, 1440, TimeUnit.MINUTES);
         //scheduler.scheduleAtFixedRate(new AverageSalary(), 0, 1440, TimeUnit.MINUTES);
         //scheduler.scheduleAtFixedRate(new NormalizedPoints(), 240, 1440, TimeUnit.MINUTES);
-        scheduler.scheduleAtFixedRate(new GetFBFeeds(), 0, 30, TimeUnit.MINUTES); 
+        scheduler.scheduleAtFixedRate(new NormalizedPoints(), 0, 1440, TimeUnit.MINUTES);
         //scheduler.scheduleAtFixedRate(new GetLinkedInFeeds(), 0, 30, TimeUnit.MINUTES);
     }
 

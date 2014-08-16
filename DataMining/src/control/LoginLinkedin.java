@@ -38,7 +38,7 @@ public class LoginLinkedin extends HttpServlet {
 		 		.provider(LinkedInApi20.class)
 		        .apiKey(apiKey)
 		        .apiSecret(apiSecret)
-		        .callback("http://128.237.164.68:8080/DataMining/linkedinlogin")
+		        .callback("http://localhost:8080/DataMining/linkedinlogin")
 		        .scope("r_fullprofile rw_nus r_network")
 		        .build();
 		 //+ "r_emailaddress r_contactinfo rw_company_admin w_messages"
@@ -68,6 +68,8 @@ public class LoginLinkedin extends HttpServlet {
 			 String connection=responseOauth.getBody();
 			 LinkedInUserXML temp = new LinkedInUserXML();
 			 
+			 System.out.println(connection);
+			 
 			 try {
 				temp.parseXML(connection);
 				// temp.test();
@@ -83,7 +85,7 @@ public class LoginLinkedin extends HttpServlet {
 			}
 			 ArrayList<LinkedInUser> users = temp.users;
 			 
-			 String redirectURL = "http://128.237.164.68:8080/DataMining/success.jsp";
+			 String redirectURL = "http://localhost:8080/DataMining/success.jsp";
 			 response.sendRedirect(redirectURL);
 			 //out.println(connection);
 		 }

@@ -13,19 +13,19 @@ public class Point implements Serializable {
 	//private String uid;
 	private double x;
 	private double y;
-	private double z;
 	private int clusterIndex;
 	private String linkedinId;
 	private int isClient;
+	private int isFirst;
 
-	public Point(double x, double y, double z) {
+	public Point(double x, double y) {
 		//this.uid = uid;
 		this.x = x;
 		this.y = y;
-		this.z = z;
 		this.clusterIndex = -1;
 		this.linkedinId = "";
 		this.isClient = -1;
+		this.isFirst = -1;
 	}
 	
 //	public String getId() {
@@ -51,17 +51,9 @@ public class Point implements Serializable {
 	public void setY(double y) {
 		this.y = y;
 	}
-
-	public double getZ() {
-		return z;
-	}
-	
-	public void setZ(double z) {
-		this.z = z;
-	}
 	
 	public String toString() {
-		return "(" + x + "," + y + "," + z + ") linkedin id: " + linkedinId 
+		return "(" + x + "," + y + "," + ") linkedin id: " + linkedinId 
 				+" isClient: "+ isClient +" Cluster: " + clusterIndex;
 	}
 
@@ -87,6 +79,14 @@ public class Point implements Serializable {
 	
 	public void setLinkedinId(String linkedinId) {
 		this.linkedinId = linkedinId;
+	}
+	
+	public int getIsFist() {
+		return this.isFirst;
+	}
+	
+	public void setIsFirst(int isFirst) {
+		this.isFirst = isFirst;
 	}
 }
 

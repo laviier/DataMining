@@ -6,10 +6,12 @@ public class LinkedInUser {
 	private int companyId;
 	private int locationId;
 	private int isClient;
+	private int isFirst;
 	
-	public LinkedInUser(String id, int isClient) {
+	public LinkedInUser(String id, int isClient, int isFirst) {
 		this.linkedinId = id;
 		this.isClient = isClient;
+		this.isFirst = isFirst;
 	}
 	
 	public String getLinkedinId() {
@@ -41,5 +43,12 @@ public class LinkedInUser {
 	}
 	public void setLocationId(int locationId) {
 		this.locationId = locationId;
+	}
+	public int getIsFist() {
+		return this.isFirst;
+	}
+	
+	public void setIsFirst(int isFirst) {
+		this.isFirst = isFirst;
 	}
 }
