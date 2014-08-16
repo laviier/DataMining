@@ -134,7 +134,7 @@ public class LinkedInFeedXML {
 	        
 	        feed.setSource("linkedin");
 	        
-		    if(feed.getUser_id()!="") {
+		    if(feed.getUser_id()!="" && feed.getMessage()!="") {
 		        //System.out.println(feed.toString());
 		        insertFeeds(feed.getFeed_id(),feed.getUser_id(),feed.getFirstName()+" "+feed.getLastName(),feed.getMessage(),
 		        		feed.getPicture(),feed.getTime(),feed.getSource());
