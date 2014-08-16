@@ -79,8 +79,8 @@ public class Sql {
 		    int currentYear = cal.get(Calendar.YEAR);
 		    int currentMonth = cal.get(Calendar.MONTH);
 			
-			String updatePosotion = "update positions set is_current=0, end_year="+currentYear
-					+", end_month="+currentMonth+" where linkedin_id='"+id+"' and is_current=1;";
+			String updatePosotion = "update positions set is_current=0, end_year="+year
+					+", end_month="+month+" where linkedin_id='"+id+"' and is_current=1;";
 			String insertPosition = "INSERT INTO positions (linkedin_id,title_id,company_id,location_id,start_year,start_month,is_current) VALUE " +  
 					"('"+id+"','"+t+"','"+c+"','"+l+"','"+year+"','"+month+"',1)";
 			
