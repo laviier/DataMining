@@ -85,6 +85,13 @@ public class FeedsByClient extends HttpServlet {
 			 feed.setCreated_time(rs.getString(8));
 			 feed.setSource(rs.getString(9));
 			 
+			 int bigImage = rs.getInt(10);
+			 if (bigImage == 0) {
+				 feed.setBigImage(false);
+			 } else {
+				 feed.setBigImage(true);
+			 }
+			 
 			 allFeeds.addFeed(feed);
 		 }
 		 rs.close();

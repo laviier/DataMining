@@ -10,6 +10,7 @@ public class FacebookFeedBean {
 	String created_time;
 	String source;
 	String object_id;
+	boolean bigImage;
 	
 	public String getId() {
 		return id;
@@ -64,5 +65,11 @@ public class FacebookFeedBean {
 	}
 	public void setObject_id(String object_id) {
 		this.object_id = object_id;
+	}
+	public boolean isBigImage() {
+		return bigImage;
+	}
+	public void setBigImage(boolean bigImage) {
+		this.bigImage = bigImage;
 	}
 }

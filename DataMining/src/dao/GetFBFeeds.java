@@ -88,11 +88,13 @@ public class GetFBFeeds extends TimerTask {
 			 
 			 //To get right size of image;
 			 String pic = "null";
+			 int bigImage = 1;
 			 if (ithFeed.getObject_id() != null) {
 				 pic = getRightSize(ithFeed.getObject_id());
 			 }
 			 if (pic.equals("null")) {
 				 pic = getInsertableString(ithFeed.getPicture());
+				 bigImage = 0;
 			 }
 			 
 			 String feedId = getInsertableString(ithFeed.getId());
@@ -113,11 +115,12 @@ public class GetFBFeeds extends TimerTask {
 			 if (ithFeed.getPlace() == null) {
 				 sqlInsert += "'" + feedId + "','" + fromId + "','" 
 						 + fromName + "','" + story + "','" + message
-						 + "','" + "null" + "','" + pic + "','" + time + "','" + "facebook" + "')";
+						 + "','" + "null" + "','" + pic + "','" + time + "','" + "facebook" + "','" + bigImage + "')";
 			 } else {
 				 sqlInsert += "'" + ithFeed.getId() + "','" + ithFeed.getFrom().getId() + "','" 
 						 + ithFeed.getFrom().getName() + "','" + ithFeed.getStory() + "','" + ithFeed.getMessage()
-						 + "','" + getInsertableString(ithFeed.getPlace().getName()) + "','" + pic + "','" + time + "','" + "facebook" + "')";
+						 + "','" + getInsertableString(ithFeed.getPlace().getName()) + "','" + pic + "','" 
+						 + time + "','" + "facebook" + bigImage + "')";
 			 }
 			 try {
 				 System.out.println(sqlInsert);
