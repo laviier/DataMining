@@ -59,6 +59,7 @@ public class UpdateJob extends HttpServlet {
 			 
 		try {
 			updates = temp.parseXML(connection);
+			System.out.println(connection);
 			// temp.test();
 		} catch (ParserConfigurationException e) {
 			// TODO Auto-generated catch block
