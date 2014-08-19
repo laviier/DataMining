@@ -114,8 +114,8 @@ public class Sql {
 							 * 1. update old positon
 							 * 2. insert new postion
 							 */
-							//st4.execute(updatePosotion);
-							//st4.execute(insertPosition);
+							st4.execute(updatePosotion);
+							st4.execute(insertPosition);
 						} catch (Exception e) {
 							//System.err.println("position exist! ");
 						}
