@@ -70,8 +70,8 @@ public class GetLeads extends HttpServlet {
 				
 				int salary = rs.getInt("title.ave_salary");
 				
-				if(salary>=115000) lead.setScore(3);
-				else if (salary<115000 && salary>=80000) lead.setScore(2);
+				if(salary>200000) lead.setScore(3);
+				else if (salary<=200000 && salary>=100000) lead.setScore(2);
 				else lead.setScore(1);
 				
 				leads.add(lead);
