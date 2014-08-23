@@ -1,4 +1,4 @@
-package dao;
+package model;
 
 public class JobUpdateBean {
 	private String id;

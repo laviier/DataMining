@@ -36,6 +36,9 @@ public class GetLinkedInFeeds extends TimerTask {
 		//leilei
 		String apiKey = "77kkfyfzz2ltwt";
 		String apiSecret = "8UNpOx7NG2MYkPTM";
+		String PROTECTED_RESOURCE_URL2 = 
+				 "https://api.linkedin.com/v1/people/~/network/updates:(timestamp,update-key,update-content:(person:(id,first-name,last-name,current-share:(comment,content:(submitted-url)))))";
+		 
 		
 		OAuthService service = new ServiceBuilder()
 		 		.provider(LinkedInApi20.class)
@@ -47,8 +50,6 @@ public class GetLinkedInFeeds extends TimerTask {
 		 
 		Token accessToken = UpdateJobSql.getAccessToken();
 		 
-			 String PROTECTED_RESOURCE_URL2 = 
-					 "https://api.linkedin.com/v1/people/~/network/updates:(timestamp,update-key,update-content:(person:(id,first-name,last-name,current-share:(comment,content:(submitted-url)))))";
 			 
 			 OAuthRequest requestOauth = new OAuthRequest(Verb.GET, PROTECTED_RESOURCE_URL2);
 			 //Token accessToken = (Token) request.getSession().getAttribute("access_token");

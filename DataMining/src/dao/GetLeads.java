@@ -10,6 +10,8 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
+import model.LeadBean;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 

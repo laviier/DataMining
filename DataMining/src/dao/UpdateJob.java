@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
 
+import model.JobUpdateBean;
 import model.LinkedInUser;
 import model.Sql2;
 

@@ -29,13 +29,15 @@ public class Get2ndFriend extends HttpServlet {
 		 String apiSecret = "gG39SPQXrbLl2TGD";
 		 Token EMPTY_TOKEN = null;
 		 String PROTECTED_RESOURCE_URL = "https://api.linkedin.com/v1/people/~/network/updates:(update-content:(person:(id,first-name,last-name,headline)))";
+		 String callback_url = "http://localhost:8080/DataMining/LoginServlet";
+		 String scope = "r_fullprofile rw_nus r_network";
 		 
 		 OAuthService service = new ServiceBuilder()
 		 		.provider(LinkedInApi20.class)
 		        .apiKey(apiKey)
 		        .apiSecret(apiSecret)
-		        .callback("http://localhost:8080/DataMining/LoginServlet")
-		        .scope("r_fullprofile rw_nus r_network")
+		        .callback(callback_url)
+		        .scope(scope)
 		        .build();
 		 //+ "r_emailaddress r_contactinfo rw_company_admin w_messages"
 		    

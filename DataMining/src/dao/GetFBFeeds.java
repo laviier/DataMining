@@ -48,12 +48,13 @@ public class GetFBFeeds extends TimerTask {
         String apiKey = "1447625108855686";
 	    String apiSecret = "a8ce3774165d43d3bbf2b543afef0e65";
 	    String PROTECTED_RESOURCE_URL = "https://graph.facebook.com/me/home";
+	    String scope = "user_about_me,user_friends,read_stream";
 	    
 	    OAuthService service = new ServiceBuilder()
 	                                  .provider(FacebookApi.class)
 	                                  .apiKey(apiKey)
 	                                  .apiSecret(apiSecret)
-	                                  .scope("user_about_me,user_friends,read_stream")
+	                                  .scope(scope)
 	                                  .build();
 
          Token accessToken = GetFBToken.getAccessToken();

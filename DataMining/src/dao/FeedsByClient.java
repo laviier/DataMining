@@ -31,6 +31,8 @@ public class FeedsByClient extends HttpServlet {
 	private static String url = "jdbc:mysql://raymond-james.isri.cmu.edu:3306/raymond";
 	private static Connection conn = null;
 	private static Statement st = null;
+	static String username = "root";
+	static String password = "112233";
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
@@ -107,7 +109,7 @@ public class FeedsByClient extends HttpServlet {
 	      // create our mysql database connection
 	      String myDriver = "org.gjt.mm.mysql.Driver";
 	      Class.forName(myDriver);
-	      conn = DriverManager.getConnection(url, "root", "112233");
+	      conn = DriverManager.getConnection(url, username, password);
 
 	      // create the java statement
 	      st = conn.createStatement();	      

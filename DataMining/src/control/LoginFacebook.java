@@ -43,13 +43,16 @@ public class LoginFacebook extends HttpServlet {
 	    String apiSecret = "a8ce3774165d43d3bbf2b543afef0e65";
 	    String PROTECTED_RESOURCE_URL = "https://graph.facebook.com/me/home";
 	    Token EMPTY_TOKEN = null;
+	    String callback_url = "http://localhost:8080/DataMining/LoginFacebook";
+	    String scope = "user_about_me,user_friends,read_stream";
+	    String redirectURL = "http://localhost:8080/DataMining/success.jsp";
 	    
 	    OAuthService service = new ServiceBuilder()
 	                                  .provider(FacebookApi.class)
 	                                  .apiKey(apiKey)
 	                                  .apiSecret(apiSecret)
-	                                  .callback("http://localhost:8080/DataMining/LoginFacebook")
-	                                  .scope("user_about_me,user_friends,read_stream")
+	                                  .callback(callback_url)
+	                                  .scope(scope)
 	                                  .build();
 	   
 	    String authorizationUrl = service.getAuthorizationUrl(EMPTY_TOKEN);
@@ -91,7 +94,6 @@ public class LoginFacebook extends HttpServlet {
 				e1.printStackTrace();
 			 }
 			 
-			 String redirectURL = "http://localhost:8080/DataMining/success.jsp";
 			 response.sendRedirect(redirectURL);
 		 } 
 	}

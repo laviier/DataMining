@@ -6,8 +6,6 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.*;
 
-import dao.JobUpdateBean;
-
 public class Sql {
 	private static String url = "jdbc:mysql://raymond-james.isri.cmu.edu:3306/raymond";
 	//private static String contactListQuery = "select * from client, physical_address, email where client.address_id = physical_address.address_id and client.email_id = email.email_id;";

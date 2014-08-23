@@ -33,13 +33,16 @@ public class LoginLinkedin extends HttpServlet {
 		 String apiSecret = "gG39SPQXrbLl2TGD";
 		 Token EMPTY_TOKEN = null;
 		 String PROTECTED_RESOURCE_URL = "https://api.linkedin.com/v1/people/~/connections:(id,first-name,last-name,picture-url,site-standard-profile-request,location,positions)";
+		 String callback_url = "http://localhost:8080/DataMining/linkedinlogin";
+		 String redirectURL = "http://localhost:8080/DataMining/success.jsp";
+		 String scope = "r_fullprofile rw_nus r_network";
 		 
 		 OAuthService service = new ServiceBuilder()
 		 		.provider(LinkedInApi20.class)
 		        .apiKey(apiKey)
 		        .apiSecret(apiSecret)
-		        .callback("http://localhost:8080/DataMining/linkedinlogin")
-		        .scope("r_fullprofile rw_nus r_network")
+		        .callback(callback_url)
+		        .scope(scope)
 		        .build();
 		 //+ "r_emailaddress r_contactinfo rw_company_admin w_messages"
 		    
@@ -85,7 +88,7 @@ public class LoginLinkedin extends HttpServlet {
 			}
 			 ArrayList<LinkedInUser> users = temp.users;
 			 
-			 String redirectURL = "http://localhost:8080/DataMining/success.jsp";
+			 
 			 response.sendRedirect(redirectURL);
 			 //out.println(connection);
 		 }
